@@ -1,0 +1,230 @@
+@mixin center($horizontal: true, $vertical: true, $position: absolute, $additionalTransform: '') {
+	position: $position;
+	$translateX: 0;
+	$translateY: 0;
+	
+	@if $horizontal {
+		left: 50%;
+		$translateX: -50%;
+	}
+
+	@if $vertical {
+		top: 50%;
+		$translateY: -50%;
+	}
+
+	transform: translate($translateX, $translateY) unquote($additionalTransform);
+}
+
+@mixin ellipse($width, $height: $width) {
+	width: $width;
+	height: $height;
+	border-radius: 50%;
+}
+
+@mixin link {
+	cursor: pointer;
+	color: $blue2;
+	&.active {cursor: default}
+	&:hover:not(.active) {color: $blue3 !important}
+	&:focus {outline-color: $blue3}
+}
+
+@mixin button($color, $size: normal) {
+	@include button-color($color);
+	color: white;
+
+	@if $size == normal {
+		font-size: $fontSizeSmall;
+		padding: 0 6px;
+		height: 25px;
+	}
+}
+
+@mixin button-color($color) {
+	background-image: linear-gradient(to bottom, $color, darken($color, 5%));
+
+	&:not(.disabled) {
+		&:hover, &:active {
+			background-image: linear-gradient(to bottom, darken($color, 5%), darken($color, 10%));
+		}
+
+		$shadowActive: inset 0 0 5px rgba(0, 0, 0, .5);
+		$outlineFocus: 0 0 5px 2px rgba($color, .75);
+		
+		&:active {box-shadow: $shadowActive}
+		&:focus {box-shadow: $outlineFocus}
+		&:active:focus {box-shadow: $shadowActive, $outlineFocus}
+	}
+
+	&.disabled {
+		opacity: 0.4;
+		pointer-events: none;
+	}
+}
+
+@mixin drawerShadow($direction: down) {
+	@if $direction == down {
+		box-shadow: 0 5px 5px rgba(0, 0, 0, .25);
+	}
+	@else if $direction == up {
+		box-shadow: 0 -5px 5px rgba(0, 0, 0, .25);
+	}
+	@else if $direction == left {
+		box-shadow: -5px 0 5px rgba(0, 0, 0, .25);
+	}
+	@else {
+		box-shadow: 5px 0 5px rgba(0, 0, 0, .25);
+	}
+}
+
+@mixin stateColorChange($color, $property: background-color, $change: 10%) {
+	#{$property}: $color;
+	&:hover {#{$property}: darken($color, $change)}
+	&:active {#{$property}: darken($color, $change * 2)}
+}
+
+@mixin textArrow($direction: right) {
+	$fontSize: 12px;
+	$verticalAlign: 1px;
+	$margin: 5px;
+
+	@if $direction == right {
+		&:after {
+			@extend .fa;
+			content: '\f061';
+			margin-left: $margin;
+			font-size: $fontSize;
+			vertical-align: $verticalAlign;
+		}
+	}
+	@else {
+		&:before {
+			@extend .fa;
+			content: '\f060';
+			margin-right: $margin;
+			font-size: $fontSize;
+			vertical-align: $verticalAlign;
+		}
+	}
+}
+
+@mixin paddingForText($amount) {
+	padding: ($amount - 4) $amount ($amount - 3) $amount;
+}
+
+@mixin dottedButton($color: $blue3) {
+	color: $color;
+	text-transform: uppercase;
+	border: 1px dotted $color;
+	@include paddingForText(5px);
+
+	&:hover, &:focus {background: mix($color, white, 10%)}
+	&:active {background: mix($color, white, 20%)}
+}
+
+@mixin tooltipPoint($size: 9px, $borderWidth: 1px, $backgroundColor: white, $borderColor: #ccc, $offset: 0, $edge: top, $corner: center) {
+	$outerSize: $size + $borderWidth;
+
+	@if $borderWidth == 1px {
+		$borderColor: darken($borderColor, 10%);
+	}
+
+	&:before, &:after {
+	  position: absolute;
+	  content: '';
+	  border-style: solid;
+
+	  @if $edge == top {
+	  	bottom: 100%;
+	  } @else if $edge == bottom {
+	  	top: 100%;
+	  } @else if $edge == left {
+	  	right: 100%;
+	  } @else {
+	  	left: 100%;
+	  }
+	}
+
+	@if $edge == top {
+		&:before {
+      border-width: 0 $outerSize $outerSize $outerSize;
+      border-color: transparent transparent $borderColor transparent;
+    }
+    &:after {
+      border-width: 0 $size $size $size;
+      border-color: transparent transparent $backgroundColor transparent;
+    }
+	}
+	@else if $edge == bottom {
+		&:before {
+		  border-width: $outerSize $outerSize 0 $outerSize;
+		  border-color: $borderColor transparent transparent transparent;
+		}
+		&:after {
+		  border-width: $size $size 0 $size;
+		  border-color: $backgroundColor transparent transparent transparent;
+		  margin-left: $borderWidth;
+		}
+	}
+	@else if $edge == left {
+		&:before {
+		  border-width: $outerSize $outerSize $outerSize 0;
+		  border-color: transparent $borderColor transparent transparent;
+		}
+		&:after {
+		  border-width: $size $size $size 0;
+		  border-color: transparent $backgroundColor transparent transparent;
+		  margin-top: $borderWidth;
+		}
+	}
+	@else {
+		&:before {
+		  border-width: $outerSize 0 $outerSize $outerSize;
+		  border-color: transparent transparent transparent $borderColor;
+		}
+		&:after {
+		  border-width: $size 0 $size $size;
+		  border-color: transparent transparent transparent $backgroundColor;
+		  margin-top: $borderWidth;
+		}
+	}
+
+	$marginBefore: $offset - $outerSize;
+	$marginAfter: $borderWidth + $offset - $outerSize;
+	$marginBeforeNotCentered: $offset - $borderWidth;
+	$marginAfterNotCentered: $borderWidth + $marginBeforeNotCentered;
+
+	@if $corner == center {
+	  @if $edge == top or $edge == bottom {
+	    &:before, &:after { left: 50%; }
+	    &:before { margin: 0 0 0 $marginBefore; }
+	    &:after { margin: 0 0 0 $marginAfter; }
+	  }
+	  @if $edge == left or $edge == right {
+	    &:before, &:after { top: 50%; }
+	    &:before { margin: $marginBefore 0 0 0; }
+	    &:after { margin: $marginAfter 0 0 0; }
+	  }
+	}
+	@else if $corner == left {
+	  &:before, &:after { left: 0%; }
+	  &:before { margin: 0 0 0 $marginBeforeNotCentered; }
+	  &:after { margin: 0 0 0 $marginAfterNotCentered; }
+	}
+	@else if $corner == right {
+	  &:before, &:after { right: 0%; }
+	  &:before { margin: 0 $marginBeforeNotCentered 0 0; }
+	  &:after { margin: 0 $marginAfterNotCentered 0 0; }
+	}
+	@else if $corner == top {
+	  &:before, &:after { top: 0%; }
+	  &:before { margin: $marginBeforeNotCentered 0 0 0; }
+	  &:after { margin: $marginAfterNotCentered 0 0 0; }
+	}
+	@else if $corner == bottom {
+	  &:before, &:after { bottom: 0%; }
+	  &:before { margin: 0 0 $marginBeforeNotCentered 0; }
+	  &:after { margin: 0 0 $marginAfterNotCentered 0; }
+	}
+}

@@ -1,0 +1,104 @@
+.data-table {
+	width: 100%;
+	font-size: $fontSizeSmall;
+
+	$firstRowPadding: 7px;
+
+	tbody tr {
+		&:nth-child(even) td {
+			background: $grayLightest;
+		}
+
+		&:first-child {
+			td {
+				padding-top: $firstRowPadding;
+			}
+
+			.full-text {
+				top: $firstRowPadding;
+			}
+		}
+	}
+
+	th {
+		white-space: nowrap;
+		padding: 10px 5px;
+		border-bottom: 1px solid $gray1;
+	}
+
+	td {
+		position: relative;
+		overflow: visible;
+
+		&:not(:last-child) {
+			input {
+				border-right: 1px solid $grayLight;
+			}
+		}
+	}
+
+	$inputPadding: 5px;
+	$hoverBackground: mix($blue3, white, 15%);
+
+	input {
+		padding: $inputPadding;
+		border: 0;
+		width: 100%;
+		background: none;
+		position: relative;
+
+		&:focus {
+			$borderWidth: 2px;
+			border-bottom: $borderWidth solid $blue3;
+			padding-bottom: $inputPadding - $borderWidth;
+		}
+
+		&.edited {
+			background: lighten($yellow1, 40%);
+		}
+
+		&:hover:not(:focus) {
+			background: $hoverBackground;
+		}
+	}
+
+	.full-text {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		padding: $inputPadding;
+		background: $hoverBackground;
+		white-space: nowrap;
+		z-index: 1;
+		display: none;
+		pointer-events: none;
+	}
+
+	// Don't show .full-text if the corresponding input has focus
+	input:focus + .full-text {
+		display: none;
+	}
+
+	input:hover:not(:focus) + .full-text {
+		display: block;
+	}
+
+	.year {
+		width: 44px;
+	}
+
+	.track, .disc {
+		width: 1px;
+		text-align: right;
+
+		input {
+			text-align: right;
+		}
+
+		.full-text {
+			left: auto;
+			right: 0;
+		}
+	}
+}

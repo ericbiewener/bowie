@@ -1,0 +1,46 @@
+#tutorial {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 10;
+	display: none;
+}
+
+.tutorial-text {
+	margin: auto auto 0 auto;
+	padding: $bodyPadding/2 0 ($bodyPadding/2 - 5px) 0;
+	background: white;
+	border-top: 1px solid $gray1;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+	width: 100vw;
+	text-align: center;
+	position: relative;
+	display: none;
+
+	.text {
+		width: 800px;
+		margin: 0 auto;
+		margin-bottom: $bodyPadding/2 - 5px;
+	}
+
+	.next {
+		display: inline-block;
+	}
+}
+
+.isShowingTutorialText  #tutorial {
+	background: rgba(0, 0, 0, .15);
+
+	.tutorial-text {
+		display: block;
+	}
+}
+
+.isRunningTutorial #tutorial {
+	display: flex;
+}
+
+.end-tutorial {
+	position: absolute;
+	bottom: $bodyPadding/2 - 5px;
+	right: $bodyPadding/2 - 5px;
+}

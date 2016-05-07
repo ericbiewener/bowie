@@ -1,0 +1,52 @@
+main {
+	position: relative;
+	min-width: 615px;
+}
+
+#main-content {
+	width: 100%;
+}
+
+@mixin dropzone-showing {
+	background: $grayLightest;
+
+	.dropzone-message {
+		display: block;
+	}
+
+	#main-content {
+		display: none;
+	}
+}
+
+.dropzone {
+	display: flex;
+	height: 100vh;
+	padding: $bodyPadding*1.75 $bodyPadding;
+
+	> div {
+		margin: auto;
+	}
+
+	&.active {
+		border: 4px solid black;
+		@include dropzone-showing;
+	}
+}
+
+.dropzone-message {
+	display: none;
+	text-align: center;
+	font-size: $fontSizeSmall;
+
+	h1 {
+		font-size: 50px;
+		margin-bottom: 10px;
+	}
+}
+
+.appIsLaunching {
+	.dropzone {
+		@include dropzone-showing;
+	}
+}

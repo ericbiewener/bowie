@@ -1,0 +1,72 @@
+.font-size-adapter {
+	display: flex;
+}
+
+.pattern-builder {
+	display: flex;
+	white-space: pre;
+	font-size: 20px;
+	margin-bottom: 30px;
+
+	$textSelectionBg: mix($blue3, white, 20%);
+	::selection {
+		background: $textSelectionBg;
+	}
+
+	.unselected, .unmapped {
+		user-select: text;
+	}
+
+	.selected {
+		position: relative;
+		user-select: none;
+		background: $textSelectionBg;
+
+		$initialColor: mix(#FF7F0D, white, 15%);
+		$hueStep: 360/7;
+
+		&.mapping-title { background: $initialColor}
+		&.mapping-artist { background: adjust-hue($initialColor, $hueStep * 2)}
+		&.mapping-album { background: adjust-hue($initialColor, $hueStep * 3)}
+		&.mapping-album-artist { background: adjust-hue($initialColor, $hueStep)}
+		&.mapping-year { background: adjust-hue($initialColor, $hueStep * 4)}
+		&.mapping-track { background: adjust-hue($initialColor, $hueStep * 5)}
+		&.mapping-disc { background: adjust-hue($initialColor, $hueStep * 6)}
+	}
+	
+	.mapping {
+		@include center(true, false);
+		bottom: 100%;
+		font-size: $fontSizeSmall;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: line-through;
+		}
+	}
+}
+
+.map-selector {
+	$background: #f5f5f5;
+	$border: #ccc;
+	$tooltipPointSize: 10px;
+
+	position: absolute;
+	z-index: 2;
+	background: #f5f5f5;
+	border: 1px solid $border;
+	user-select: none;
+	white-space: nowrap;
+	margin-top: $tooltipPointSize + 2;
+	@include center(true, false);
+	@include tooltipPoint($size: $tooltipPointSize, $borderColor: $border, $backgroundColor: $background);
+
+	li {
+		padding: 5px 10px;
+
+		&:hover:not(.no-fields) {
+			cursor: pointer;
+			background: white;
+		}
+	}
+}

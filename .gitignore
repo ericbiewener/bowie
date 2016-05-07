@@ -1,0 +1,8 @@
+.DS_STORE
+
+node_modules
+*.sublime-project
+*.sublime-workspace
+
+_song_examples
+_song_examples_BAK

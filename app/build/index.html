@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NEW PROJECT</title>
+  
+  <link href="./css/app.css" rel="stylesheet">
+
+</head>
+<body>
+	<main id="root"></main>
+  <script src="./js/app.js"></script>
+
+  <script>
+    if (process.env.BROWSER_SYNC_CLIENT_URL) {
+      const current = document.currentScript;
+      const script = document.createElement('script');
+      script.src = process.env.BROWSER_SYNC_CLIENT_URL;
+      script.async = true;
+      current.parentNode.insertBefore(script, current);
+    }
+  </script>
+
+</body>
+</html>

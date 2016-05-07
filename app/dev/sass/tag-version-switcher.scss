@@ -1,0 +1,41 @@
+.simple-menu-item {
+	@include link;
+}
+
+.tag-version-switcher {
+	display: flex;
+	margin-bottom: 10px;
+	
+	.simple-menu, .save-changes {
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
+	.simple-menu {
+		display: flex;
+	}
+
+	.simple-menu-item {
+		color: $gray2;
+		margin-right: 20px;
+
+		&.active {
+			color: $blue2;
+		}
+	}
+}
+
+#app-root {
+	&:not(.hasManualEdits):not(.isViewingEditedTags) .simple-menu-item-manual-edits,
+	&:not(.hasMappedPatterns):not(.isViewingPatternTags) .simple-menu-item-pattern {
+		display: none;
+	}
+}
+
+.isViewingOriginalTags,
+.isViewingPatternTags:not(.hasMappedPatterns),
+.isViewingEditedTags:not(.hasManualEdits) {
+	.save-changes {
+		visibility: hidden; // don't use `display: none` because we want the button to still influence the container's height
+	}
+}

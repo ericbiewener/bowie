@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/Open_Sans/OpenSans-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/Open_Sans/OpenSans-SemiBold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+	font-family: Open Sans;
+	font-size: $fontSize;
+	background: white;
+	font-color: $textColor;
+}
+
+a {
+	@include link;
+}
+
+button {
+	border-radius: $borderRadius;
+	outline: none;
+
+	&.primary {
+		@include button-color(lighten($blue2, 5%));
+		@include paddingForText(6px);
+		font-size: 14px;
+		color: white;
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+		&.danger {@include button-color(#c00)}
+		&:disabled {opacity: 0.5}
+	}
+}
+
+input {
+	outline: none;
+}
