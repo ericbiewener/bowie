@@ -18,7 +18,7 @@ export function readFiles(files) {
 	
 	tagParser.stdout.on('data', data => dataArray = [...dataArray, data]) 
 
-	tagParser.stderr.on('close', function(code, signal) {
+	tagParser.stdout.on('close', () => {
 		let songs = JSON.parse(dataArray.toString())
 		songs.forEach((song, i) => {
 			if (!song.Title) song.Title = files[i].name
@@ -35,7 +35,7 @@ export function readFiles(files) {
 export function saveTags(songs) {
 	let tagParser = execFile(TAG_WRITER_FILEPATH, [JSON.stringify(songs)])
 
-	tagParser.stdout.on('error', data => {
+	tagParser.stderr.on('error', data => {
 		alert('Whoaaa whoaa whoa.\n\nSomething went wrong while saving your changes!')
 		console.error(`stderr: ${data}`)
 	})

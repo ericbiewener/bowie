@@ -27,12 +27,13 @@ export function hasMappedPatterns(patterns) {
 
 const booleanStateForRootClass = [
 	'appIsLaunching', 'canUndo', 'canRedo', 'hasManualEdits', 'hasMappedPatterns',
-	'isViewingOriginalTags', 'isViewingPatternTags', 'isViewingEditedTags', 
-	'isRunningTutorial', 'isShowingTutorialText',
+	'isViewingOriginalTags', 'isViewingPatternTags', 'isViewingEditedTags', 'isRunningTutorial', 
+	'isShowingTutorialText',
 ]
 
 export function buildRootClass(state) {
-	let rootClass = ''
-	booleanStateForRootClass.forEach(p => rootClass += state[p] ? `${p} ` : '')
+	let rootClass = state.dependencyStatus + ' '
+	console.debug(state.dependencyStatus)
+	booleanStateForRootClass.forEach(p => rootClass += state[p] ? p + ' ' : '')
 	return rootClass
 }

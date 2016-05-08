@@ -10,6 +10,7 @@ import DirectoryIncrementer from 'js/pattern/DirectoryIncrementerContainer'
 import TagEditor from 'js/tag-editor/TagEditorContainer'
 import TagVersionSwitcher from 'js/tag-editor/TagVersionSwitcherContainer'
 import Tutorial from 'js/tutorial/TutorialContainer'
+import DependencyInfo from 'js/dependencies/DependencyInfoContainer'
 
 
 const Root = ({rootClass, openTutorial}) => (
@@ -42,6 +43,7 @@ const Root = ({rootClass, openTutorial}) => (
 			</div>
 		</Dropzone>
 		<Tutorial />
+		<DependencyInfo />
 	</div>
 )
 

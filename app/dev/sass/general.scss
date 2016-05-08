@@ -42,3 +42,16 @@ button {
 input {
 	outline: none;
 }
+
+main {
+	position: relative;
+	min-width: 615px;
+}
+
+#main-content {
+	width: 100%;
+}
+
+.logo {
+	background: url('../img/logo.svg');
+}

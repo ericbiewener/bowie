@@ -1,0 +1,54 @@
+#dependencies {
+	position: fixed;
+	top: 0; left: 0; right: 0; bottom: 0;
+	z-index: 100;
+	background: $dropzoneBackground;
+	display: none;
+	text-align: center;
+
+	.logo {
+		$height: 100px;
+		width: $height * $logoRatio;
+		height: $height;
+		margin-bottom: $bodyPadding/2 - 5px;
+		display: inline-block;
+		opacity: 0.5;
+		animation: glow 2s infinite;
+	}
+}
+
+@-webkit-keyframes glow {
+	0% { -webkit-filter: grayscale(100%); }
+	50% { -webkit-filter: grayscale(0); }
+	100% { -webkit-filter: grayscale(100%); }
+}
+
+.INSTALLING_DEPENDENCIES,
+.INTERNET_IS_DISCONNECTED {
+	#dependencies {
+		display: flex;
+	}
+}
+
+.installing-dependencies, .no-internet {
+	margin: auto;
+	width: 600px;
+}
+
+.no-internet {
+	display: none;
+
+	.text {
+		margin-bottom: $bodyPadding/2 - 5px;
+	}
+}
+
+.INTERNET_IS_DISCONNECTED {
+	.installing-dependencies {
+		display: none;
+	}
+	
+	.no-internet {
+		display: block;
+	}
+}

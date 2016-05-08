@@ -4,10 +4,11 @@
 @import './init/mixins.scss';
 @import './init/normalize/normalize.scss';
 @import './init/normalize/normalize-more.scss';
-@import './init/general.scss';
 
-@import './layout.scss';
+@import './general.scss';
+@import './dropzone.scss';
 @import './tutorial.scss';
+@import './dependencies.scss';
 @import './top-bar.scss';
 @import './tag-version-switcher.scss';
 @import './data-table.scss';

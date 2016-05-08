@@ -7,18 +7,20 @@ import {originalTags, ioMiddleware} from 'js/io/io-redux'
 import {patterns, parentDirectories} from 'js/pattern/pattern-redux'
 import {manualTagEdits, tagsBeingViewed} from 'js/tag-editor/tag-editor-redux'
 import {isRunningTutorial, tutorialText, isShowingTutorialText, TutorialActions} from 'js/tutorial/tutorial-redux'
+import {dependencyStatus} from 'js/dependencies/dependencies-redux'
 import {TagVersion} from 'js/tag-editor/tag-editor-constants'
-
-
-let appIsLaunching = true
+import subscribe from 'js/redux/subscribe'
+import {appIsLaunching} from 'js/redux/reducers'
 
 const combinedReducers = combineReducers({
+	appIsLaunching,
 	originalTags,
 	manualTagEdits,
 	parentDirectories,
 	isRunningTutorial,
 	tutorialText,
 	isShowingTutorialText,
+	dependencyStatus,
 })
 
 function rootReducer(state={}, action) {
@@ -27,9 +29,6 @@ function rootReducer(state={}, action) {
 	}
 
 	let s = combinedReducers(state, action)
-
-	s.appIsLaunching = appIsLaunching
-	appIsLaunching = false
 
 	let firstSongFilepath = s.originalTags.present.length && s.originalTags.present[0].filepath
 	s.patterns = patterns(state.patterns, action, s.parentDirectories, firstSongFilepath)
@@ -56,17 +55,6 @@ const store = createStore(
 	applyMiddleware(ioMiddleware)
 )
 
-// STATE PERSISTENCE
-// ---------------------------------------------
-let previousDirectories
-
-store.subscribe(function() {
-	let state = store.getState(),
-	    currentDirectories = state.parentDirectories
-
-	if (currentDirectories !== previousDirectories && !state.isRunningTutorial) {
-		localStorage.setItem('parentDirectories', currentDirectories)
-	}
-})
+subscribe(store)
 
 export default store
