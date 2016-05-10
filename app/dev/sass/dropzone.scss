@@ -37,6 +37,10 @@
 }
 
 .DEPENDENCIES_INSTALLED:not(.appIsLaunching) {
+	.dropzone {
+		background: none;
+	}
+
 	#main-content {
 		display: block;
 	}
