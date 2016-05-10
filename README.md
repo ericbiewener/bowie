@@ -1,7 +1,7 @@
-<p align="center">
+<div align="center">
   <img src="http://i.imgur.com/UYWIuwU.png" height="96">
-</p>
-# Bowie Audio Tag Editor 
+</div>
+# Bowie Audio Tag Editor
 
 Take a nostalgic trip back in time to when correcting audio file tags was a thing! This application will help you make quick work of that obsolete task by allowing you to automatically tag files based on the file name and path.
 
