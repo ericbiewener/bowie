@@ -10,7 +10,7 @@ const execAsync = Promise.promisify(exec)
 const {INSTALLING_DEPENDENCIES, DEPENDENCIES_INSTALLED, INTERNET_IS_DISCONNECTED} = DependencyActions
 
 let cmdPing = 'ping -c1 google.com',
-    cmdBrew = 'which brew',
+    cmdBrew = 'brew help',
     cmdTaglib = 'brew ls',
     cmdTaglibRuby = 'gem list taglib-ruby',
     homebrewInstalled,
@@ -20,15 +20,26 @@ let cmdPing = 'ping -c1 google.com',
 export function checkDependencies(callback) {
 	let finalResult = {}
 
+	exec(cmdBrew, (error, stdout, stderr) => {
+
+	})
+
+	execAsync(cmdBrew).then(results => {
+
+	})
+	.catch(error => {
+		
+	})
+
 	Promise.all([
-		execAsync(cmdBrew),
-		execAsync(cmdTaglib),
-		execAsync(cmdTaglibRuby),
+		execAsync(cmdBrew).reflect(),
+		execAsync(cmdTaglib).reflect(),
+		execAsync(cmdTaglibRuby).reflect(),
 	])
 	.then(results => {
-		homebrewInstalled = checkForHomebrew(results[0])
-		taglibInstalled = checkForTaglib(results[1])
-		taglibRubyInstalled = checkForTaglibRuby(results[2])
+		homebrewInstalled = checkForHomebrew(results[0]._settledValueField)
+		taglibInstalled = checkForTaglib(results[1]._settledValueField)
+		taglibRubyInstalled = checkForTaglibRuby(results[2]._settledValueField)
 
 		if (!taglibInstalled || !taglibRubyInstalled) {
 			return execAsync('ping -c1 google.com')
@@ -37,6 +48,7 @@ export function checkDependencies(callback) {
 		}
 	})
 	.then(() => {
+		return 
 		if (!taglibInstalled) {
 			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
 			if (homebrewInstalled) {
@@ -69,7 +81,11 @@ export function checkDependencies(callback) {
 
 function checkForHomebrew(scriptResult) {
 	console.debug(`Homebrew dependency check result:\n\n${scriptResult}`)
-	return Boolean(scriptResult)
+	if (typeof scriptResult === 'string') return true
+
+	// Only return false if the command failed for the right reason.
+	if (scriptResult.message.indexOf('command not found') > -1) return false
+	throw(new Error(`'${cmdBrew}' command failed with message:\n\n${scriptResult.message}.`))
 }
 
 function checkForTaglib(scriptResult) {

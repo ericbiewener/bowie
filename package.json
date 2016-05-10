@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "productName": "Bowie",
   "description": "Meta Data Tagging",
+  "repository": "https://github.com/ericbiewener/bowie",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
