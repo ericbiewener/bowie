@@ -1,6 +1,6 @@
 # Bowie Audio Tag Editor ![alt text](http://i.imgur.com/UYWIuwU.png "Logo")
 
-Take a nostalgic trip back in time to when correcting audio file tags was a thing! This application will help you make quick work of that obsolete task by allowing you to automatically tag files based on the file name and path.![alt text](http://i.imgur.com/UYWIuwU.png "Logo Title Text 1")
+Take a nostalgic trip back in time to when correcting audio file tags was a thing! This application will help you make quick work of that obsolete task by allowing you to automatically tag files based on the file name and path.
 
 Supports MP3/MP4/M4A files.
 
