@@ -35,3 +35,9 @@
 .appIsLaunching.DEPENDENCIES_INSTALLED .dropzone .dropzone-message {
 	display: block;
 }
+
+.DEPENDENCIES_INSTALLED:not(.appIsLaunching) {
+	#main-content {
+		display: block;
+	}
+}
