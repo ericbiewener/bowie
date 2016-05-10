@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="http://i.imgur.com/UYWIuwU.png" height="96">
+  <img src="http://i.imgur.com/Sro1k50.png" height="96">
 </div>
 # Bowie Audio Tag Editor
 
