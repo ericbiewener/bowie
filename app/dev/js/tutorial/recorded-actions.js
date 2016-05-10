@@ -11,9 +11,9 @@ const init = [
 				"Album": "",
 				"Year": "",
 				"Genre": "",
-				"Title": "01 Watch That Man.m4a",
+				"Title": "01 Watch that Man.m4a",
 				"Composer": "",
-				"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch That Man.m4a"
+				"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch that Man.m4a"
 			},
 			{
 				"Artist": "",
@@ -166,24 +166,24 @@ const main = [
 			"timing": 500,
 			"songIndex": 0,
 			"field": "Title",
-			"newVal": "01Watch That Man.m4a",
-			"originalVal": "01 Watch That Man.m4a"
+			"newVal": "01Watch that Man.m4a",
+			"originalVal": "01 Watch that Man.m4a"
 		},
 		{
 			"type": "UPDATE_TAG",
 			"timing": 125,
 			"songIndex": 0,
 			"field": "Title",
-			"newVal": "0Watch That Man.m4a",
-			"originalVal": "01 Watch That Man.m4a"
+			"newVal": "0Watch that Man.m4a",
+			"originalVal": "01 Watch that Man.m4a"
 		},
 		{
 			"type": "UPDATE_TAG",
 			"timing": 125,
 			"songIndex": 0,
 			"field": "Title",
-			"newVal": "Watch That Man.m4a",
-			"originalVal": "01 Watch That Man.m4a"
+			"newVal": "Watch that Man.m4a",
+			"originalVal": "01 Watch that Man.m4a"
 		},
 		{
 			"type": "CELL_BLURRED",
@@ -647,9 +647,9 @@ const main = [
 					"Album": "Aladdin Sane",
 					"Year": 1973,
 					"Genre": "",
-					"Title": "Watch That Man",
+					"Title": "Watch that Man",
 					"Composer": "",
-					"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch That Man.m4a",
+					"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch that Man.m4a",
 					"remainingPath": ""
 				},
 				{
@@ -794,9 +794,9 @@ const main = [
 					"Album": "",
 					"Year": "",
 					"Genre": "",
-					"Title": "01 Watch That Man.m4a",
+					"Title": "01 Watch that Man.m4a",
 					"Composer": "",
-					"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch That Man.m4a"
+					"filepath": "/Users/hotness/music/tutorial/tracks/David Bowie/1973 Aladdin Sane/01 Watch that Man.m4a"
 				},
 				{
 					"Artist": "",
