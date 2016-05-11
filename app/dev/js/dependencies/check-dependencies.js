@@ -27,8 +27,13 @@ export function checkDependencies(callback) {
 	])
 	.then(results => {
 		homebrewInstalled = checkForHomebrew(results[0]._settledValueField)
-		taglibInstalled = checkForTaglib(results[1]._settledValueField)
 		taglibRubyInstalled = checkForTaglibRuby(results[2]._settledValueField)
+
+		// Since the version of taglib we're looking for would have been installed with
+		// the `brew` command, only check for it if Homebrew is already installed.
+		if (homebrewInstalled) {
+			taglibInstalled = checkForTaglib(results[1]._settledValueField)
+		}
 
 		if (!taglibInstalled || !taglibRubyInstalled) {
 			return execAsync('ping -c1 google.com')
