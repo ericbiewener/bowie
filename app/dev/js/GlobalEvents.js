@@ -1,5 +1,5 @@
 /**
- * A higher-level component is given event handler props via `listenFor`, e.g.
+ * The root component is given event handler props via `listenFor`, e.g.
  * {...listenFor('mouseUp', 'mouseDown')}. This will cause it to broadcast 
  * the specified events to any subscribing components below it. Subscribing 
  * components should call `GlobalEvents.subscribe/unsubcribe` inside 
