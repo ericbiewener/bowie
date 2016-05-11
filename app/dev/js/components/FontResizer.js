@@ -19,7 +19,7 @@ const FontResizer = React.createClass({
 	},
 
 	render: function() {
-		return 	<div className='font-size-adapter' ref={el => this.el = el}>
+		return 	<div className='font-resizer' ref={el => this.el = el}>
 					{this.props.children}
 				</div>
 	}
@@ -27,6 +27,8 @@ const FontResizer = React.createClass({
 
 function resizeTextToFit(innerEl, outerEl, fontSize, maxFontSize) {
 	let overflow = innerEl.scrollWidth - outerEl.offsetWidth
+
+	console.debug(maxFontSize)
 
 	if (overflow > 0) {
 		let newFontSize = fontSize - .1

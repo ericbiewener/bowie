@@ -4,7 +4,7 @@ export const paths = {
 
   client: {
     js: {dev: './app/dev/js/app.js', build: './app/build/js/'},
-    css: {dev: './app/dev/sass/app.scss', build: './app/build/css/'},
+    css: {dev: './app/dev/scss/app.scss', build: './app/build/css/'},
     html: './app/build/index.html',
     rb: './app/rb/**/*'
   },

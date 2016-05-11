@@ -20,17 +20,6 @@ let cmdPing = 'ping -c1 google.com',
 export function checkDependencies(callback) {
 	let finalResult = {}
 
-	exec(cmdBrew, (error, stdout, stderr) => {
-
-	})
-
-	execAsync(cmdBrew).then(results => {
-
-	})
-	.catch(error => {
-		
-	})
-
 	Promise.all([
 		execAsync(cmdBrew).reflect(),
 		execAsync(cmdTaglib).reflect(),
@@ -48,7 +37,6 @@ export function checkDependencies(callback) {
 		}
 	})
 	.then(() => {
-		return 
 		if (!taglibInstalled) {
 			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
 			if (homebrewInstalled) {
