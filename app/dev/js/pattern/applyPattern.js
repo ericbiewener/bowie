@@ -91,7 +91,6 @@ function discardUnmappedPattern(songs, pattern) {
 
 function matchOnDelimiter(song, field, pattern, delimiter, delimiterOccurrences) {
 	let delimiterLocation = song.remainingPath.indexOf(delimiter, delimiterOccurrences)
-	// console.debug(song, field, delimiter, delimiterOccurrences)
 	if (delimiterLocation === -1) return false
 
 	let tagValue = song.remainingPath.slice(0, delimiterLocation),

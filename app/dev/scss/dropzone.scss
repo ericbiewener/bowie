@@ -2,7 +2,9 @@
 	background: $dropzoneBackground;
 
 	#main-content {
-		display: none;
+		// Can't just use display: none because FontResizer won't be able
+		// to calculate the initial font size
+		visibility: hidden;
 	}
 }
 
@@ -11,6 +13,7 @@
 	height: 100vh;
 	padding: $bodyPadding*1.75 $bodyPadding;
 	@include dropzone-showing;
+	position: relative;
 
 	> div {
 		margin: auto;
@@ -21,6 +24,10 @@
 	display: none;
 	text-align: center;
 	font-size: $fontSizeSmall;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 
 	h1 {
 		font-size: 50px;
@@ -42,6 +49,6 @@
 	}
 
 	#main-content {
-		display: block;
+		visibility: visible;
 	}
 }

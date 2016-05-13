@@ -5,6 +5,6 @@ const actions = []
 
 export const recordActionsMiddleware = ({ getState }) => next => action => {
 	actions.push(action)
-	console.debug('ALL ACTIONS', actions)
+	console.log('ALL ACTIONS', actions)
 	return next(action)
 }

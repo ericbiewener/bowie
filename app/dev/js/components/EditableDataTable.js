@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {slugify} from 'js/utils'
-import {PositiveIntegerInput} from 'js/components/RestrictedCharacterInput'
+import {PositiveIntegerInput} from 'js/components/PositiveIntegerInput'
 
 
 const EditableDataTable = (props) => {

@@ -98,7 +98,11 @@
 
 		.full-text {
 			left: auto;
-			right: 0;
+			right: 1px;
 		}
+	}
+
+	.disc .full-text {
+		right: 0
 	}
 }

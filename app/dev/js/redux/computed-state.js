@@ -33,7 +33,6 @@ const booleanStateForRootClass = [
 
 export function buildRootClass(state) {
 	let rootClass = state.dependencyStatus + ' '
-	console.debug(state.dependencyStatus)
 	booleanStateForRootClass.forEach(p => rootClass += state[p] ? p + ' ' : '')
 	return rootClass
 }

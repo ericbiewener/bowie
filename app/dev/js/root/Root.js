@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {listenFor} from 'js/GlobalEvents'
+import {listenFor} from 'react-global-events'
 import {readFiles} from 'js/io/io'
 import Dropzone from 'react-dropzone'
 import IoSaveTagsButton from 'js/io/IoSaveTagsContainer'

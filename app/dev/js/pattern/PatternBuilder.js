@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {slugify} from 'js/utils'
-import GlobalEvents from 'js/GlobalEvents'
-import FontResizer from 'js/components/FontResizer'
+import GlobalEvents from 'react-global-events'
+import FontResizer from 'react-font-resizer'
 
 
 const PatternBuilder = React.createClass({
