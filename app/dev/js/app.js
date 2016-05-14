@@ -28,6 +28,10 @@ export function installingDependencyUpdate(status) {
 	store.dispatch(DependencyActionCreators.installingDependency(status))
 }
 
+export function dependencyProgressUpdate(status) {
+	store.dispatch(DependencyActionCreators.dependencyInstallProgress(status))
+}
+
 function maybeShowTutorial() {
 	if (localStorage.getItem('suppressTutorial')) return
 	localStorage.setItem('suppressTutorial', true)

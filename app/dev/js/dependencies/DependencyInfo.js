@@ -39,6 +39,7 @@ const DependencyInfo = React.createClass({
 						<div className='logo'></div>
 						<div className='text'>Installing Dependencies. This will take a few minutes...</div>
 						<div className='dependency-message'>{this.props.dependencyBeingInstalled}<span className='ellipsis'></span></div>
+						<div className='cli-message'>{this.props.cliMessage}</div>
 					</div>
 					<div className='no-internet'>
 						<div className='text' ref={el => this.noInternetEl = el}>It appears that you aren't connected to the internet. The first time using this app, we need to download and install some dependencies. Please check your internet connection.</div>

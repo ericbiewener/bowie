@@ -7,6 +7,7 @@ import DependencyInfo from 'js/dependencies/DependencyInfo'
 
 const mapStateToProps = state => ({
 	dependencyBeingInstalled: state.dependencyBeingInstalled,
+	cliMessage: state.dependencyInstallProgress,
 	onClick: checkDependencies
 })
 

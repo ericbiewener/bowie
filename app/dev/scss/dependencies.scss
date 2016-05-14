@@ -35,8 +35,15 @@
 				width: 0px;
 			}
 		}
+	}
 
-		
+	.cli-message {
+		font-size: $fontSizeSmall;
+		padding-top: $fontSize;
+		margin-top: $fontSize;
+		color: $gray1;
+		height: 38px;
+		border-top: 1px solid $grayLight;
 	}
 }
 

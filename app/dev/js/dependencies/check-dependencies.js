@@ -1,8 +1,11 @@
 const require = window.require
-const exec = require('child_process').exec
+// const exec = require('child_process').exec
+const childProcess = require('child_process')
+const exec = childProcess.exec
+const spawn = childProcess.spawn
 import Promise from 'bluebird'
 
-import {dependencyStatusUpdate, installingDependencyUpdate} from 'js/app'
+import {dependencyStatusUpdate, installingDependencyUpdate, dependencyProgressUpdate} from 'js/app'
 import {DependencyActions} from 'js/dependencies/dependencies-redux'
 
 
@@ -25,6 +28,7 @@ let cmd = {
 
     	sourceRvm: 'source ~/.rvm/scripts/rvm',
     },
+    errorAlert = 'Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues',
     rvmInstalled,
     homebrewInstalled,
     taglibInstalled,
@@ -121,25 +125,11 @@ function checkIfCommandExists(scriptResult) {
 // We don't need to pass the promise result back up the promise chain.
 
 function installRvmAndRuby() {
-	let step = 'Installing RVM & Ruby'
-	installingDependencyUpdate(step)
-	console.log(step)
+	let fullCommand = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby + ' && ' + cmd.sourceRvm
 
-	cmd = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby + ' && ' + cmd.sourceRvm
-
-	execAsync(cmd)
-		.then(installTaglibOrHomebrew)
-		.catch(error => {
-			// We can ignore the error 'shell_session_update: command not found'
-			if (error.message.indexOf('shell_session_update: command not found') === -1) {
-				handleError(error, step)
-				return
-			}
-			
-			installTaglibOrHomebrew()
-		})
-
-	return null
+	installScript(fullCommand, 'Installing RVM & Ruby', installTaglibOrHomebrew, error => (
+		error.indexOf('shell_session_update: command not found') === -1
+	))
 }
 
 function installTaglibOrHomebrew() {
@@ -153,27 +143,11 @@ function installTaglibOrHomebrew() {
 }
 
 function installHomebrew() {
-	let step = 'Installing Homebrew'
-	installingDependencyUpdate(step)
-	console.log(step)
-
-	execAsync(cmd.installHomebrew)
-		.then(installTaglib)
-		.catch(error => handleError(error, step))
-
-	return null
+	installScript(cmd.installTaglibRuby, 'Installing Homebrew', installTaglib)
 }
 
 function installTaglib() {
-	let step = 'Installing Taglib'
-	installingDependencyUpdate(step)
-	console.log(step)
-
-	execAsync(cmd.installTaglib)
-		.then(installTaglibRuby)
-		.catch(error => handleError(error, step))
-
-	return null
+	installScript(cmd.installTaglib, 'Installing Taglib', installTaglibRuby)
 }
 
 function installTaglibRuby() {
@@ -182,20 +156,34 @@ function installTaglibRuby() {
 		return
 	}
 
-	let step = 'Installing gem taglib-ruby'
-	installingDependencyUpdate(step)
-	console.log(step)
-
-	execAsync(cmd.installTaglibRuby)
-		.then(() => dependencyStatusUpdate(DEPENDENCIES_INSTALLED))
-		.catch(error => handleError(error, step))
-
-	return null
+	installScript(cmd.installTaglibRuby, 'Installing gem taglib-ruby', () => {
+		dependencyStatusUpdate(DEPENDENCIES_INSTALLED)
+	})
 }
 
-// INSTALLATION ERROR HANDLING
+function installScript(command, message, successCallback, customErrorChecker) {
+	installingDependencyUpdate(message)
+	console.log(message)
 
-function handleError(error, step) {
-	console.error(JSON.stringify(error), error)
-	alert('Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
+	let hasError,
+	    script = spawn('/bin/sh', ['-c', command])
+
+	script.stdout.on('data', function(data){
+		dependencyProgressUpdate(data.toString())
+	})
+
+	script.stdout.on('close', function(){
+		if (hasError) {
+			alert(errorAlert)
+			return
+		}
+
+		successCallback()
+	})
+
+	script.stderr.on('data', function(data){
+		let error = data.toString()
+		hasError = customErrorChecker ? customErrorChecker(error) : true
+		console.log(error)
+	})
 }
