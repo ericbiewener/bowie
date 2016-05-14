@@ -1,7 +1,5 @@
 const require = window.require
-const childProcess = require('child_process')
-const exec = childProcess.exec
-const spawn = childProcess.spawn
+const exec = require('child_process').exec
 import Promise from 'bluebird'
 
 import {dependencyStatusUpdate, installingDependencyUpdate} from 'js/app'

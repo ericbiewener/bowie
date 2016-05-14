@@ -12,7 +12,7 @@ Supports MP3/MP4/M4A files.
 - [Redux](http://redux.js.org/)
 - [TagLib](http://taglib.github.io/)
 - [taglib-ruby](https://robinst.github.io/taglib-ruby/)
-- Inspiration from [Tag&Rename](http://www.softpointer.com/tr.htm) which amazingly still exists.
+- Inspiration from [Tag&Rename](http://www.softpointer.com/tr.htm), which amazingly still exists.
 
 ## Installation & Usage
 
