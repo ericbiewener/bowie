@@ -7,7 +7,7 @@ import {originalTags, ioMiddleware} from 'js/io/io-redux'
 import {patterns, parentDirectories} from 'js/pattern/pattern-redux'
 import {manualTagEdits, tagsBeingViewed} from 'js/tag-editor/tag-editor-redux'
 import {isRunningTutorial, tutorialText, isShowingTutorialText, TutorialActions} from 'js/tutorial/tutorial-redux'
-import {dependencyStatus} from 'js/dependencies/dependencies-redux'
+import {dependencyStatus, dependencyBeingInstalled} from 'js/dependencies/dependencies-redux'
 import {TagVersion} from 'js/tag-editor/tag-editor-constants'
 import subscribe from 'js/redux/subscribe'
 import {appIsLaunching} from 'js/redux/reducers'
@@ -21,6 +21,7 @@ const combinedReducers = combineReducers({
 	tutorialText,
 	isShowingTutorialText,
 	dependencyStatus,
+	dependencyBeingInstalled,
 })
 
 function rootReducer(state={}, action) {

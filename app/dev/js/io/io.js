@@ -26,17 +26,23 @@ export function readFiles(files) {
 		store.dispatch(IoActionCreators.replaceSongs(songs))
 	})
 
-	tagParser.stderr.on('data', data => {
-		alert('Whoaaa whoaa whoa.\n\nCouldn\'t read those files!')
-		console.error(`stderr: ${data}`)
-	})
+	createErrorHandler(tagParser, 'Whoaaa whoaa whoa.\n\nCouldn\'t read those files!')
 }
 
 export function saveTags(songs) {
 	let tagParser = execFile(TAG_WRITER_FILEPATH, [JSON.stringify(songs)])
+	createErrorHandler(tagParser, 'Whoaaa whoaa whoa.\n\nSomething went wrong while saving your changes!')
+}
 
-	tagParser.stderr.on('error', data => {
-		alert('Whoaaa whoaa whoa.\n\nSomething went wrong while saving your changes!')
-		console.error(`stderr: ${data}`)
+function createErrorHandler(tagParser, alertMessage) {
+	let hasErrored
+	tagParser.stderr.on('data', data => {
+		console.error(data)
+
+		// Prevent multiple alert windows since this is streaming data
+		if (!hasErrored) {
+			hasErrored = true
+			alert(alertMessage)
+		}
 	})
 }

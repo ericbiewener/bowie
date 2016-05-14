@@ -34,6 +34,8 @@ export function jsTask() {
 		.pipe(gulpif(!settings.isStartup, browserSync.stream()))
 }
 
+jsTask()
+
 function emitError(error) {
 	console.log(error)
 	dialog.emit(

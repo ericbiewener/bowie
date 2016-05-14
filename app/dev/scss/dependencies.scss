@@ -13,11 +13,40 @@
 		margin-bottom: $bodyPadding/2 - 5px;
 		display: inline-block;
 		opacity: 0.5;
-		animation: glow 4s infinite linear;
+		animation: logo 4s infinite linear;
+	}
+
+	.dependency-message {
+		color: $gray2;
+		font-size: $fontSizeSmall;
+		margin-top: $fontSize;
+
+		.ellipsis {
+			display: inline-block;
+			width: 1em;
+			text-align: left;
+
+			&:after {
+				overflow: hidden;
+				display: inline-block;
+				vertical-align: bottom;
+				animation: ellipsis steps(4,end) 1.5s infinite;
+				content: "\2026";
+				width: 0px;
+			}
+		}
+
+		
 	}
 }
 
-@-webkit-keyframes glow {
+@keyframes ellipsis {
+  to {
+    width: 1em;    
+  }
+}
+
+@keyframes logo {
 	0% { -webkit-filter: hue-rotate(0); transform: scale(1)}
 	50% { -webkit-filter: hue-rotate(180deg); transform: scale(1.15)}
 	100% { -webkit-filter: hue-rotate(360deg); transform: scale(1)}

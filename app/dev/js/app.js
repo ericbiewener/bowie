@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 
 import store from 'js/redux/store'
 import checkDependencies from 'js/dependencies/check-dependencies'
-import {DependencyActions} from 'js/dependencies/dependencies-redux'
+import {DependencyActions, DependencyActionCreators} from 'js/dependencies/dependencies-redux'
 import {openTutorial} from 'js/tutorial/playback-controls'
 import Root from 'js/root/RootContainer'
 
@@ -22,6 +22,10 @@ export function dependencyStatusUpdate(status) {
 	if (status === DependencyActions.DEPENDENCIES_INSTALLED) {
 		maybeShowTutorial()
 	}
+}
+
+export function installingDependencyUpdate(status) {
+	store.dispatch(DependencyActionCreators.installingDependency(status))
 }
 
 function maybeShowTutorial() {

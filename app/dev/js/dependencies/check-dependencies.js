@@ -1,8 +1,10 @@
 const require = window.require
-const exec = require('child_process').exec
+const childProcess = require('child_process')
+const exec = childProcess.exec
+const spawn = childProcess.spawn
 import Promise from 'bluebird'
 
-import {dependencyStatusUpdate} from 'js/app'
+import {dependencyStatusUpdate, installingDependencyUpdate} from 'js/app'
 import {DependencyActions} from 'js/dependencies/dependencies-redux'
 
 
@@ -121,7 +123,8 @@ function checkIfCommandExists(scriptResult) {
 // We don't need to pass the promise result back up the promise chain.
 
 function installRvmAndRuby() {
-	let step = 'Installing key, RVM & Ruby'
+	let step = 'Installing RVM & Ruby'
+	installingDependencyUpdate(step)
 	console.log(step)
 
 	cmd = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby + ' && ' + cmd.sourceRvm
@@ -153,6 +156,7 @@ function installTaglibOrHomebrew() {
 
 function installHomebrew() {
 	let step = 'Installing Homebrew'
+	installingDependencyUpdate(step)
 	console.log(step)
 
 	execAsync(cmd.installHomebrew)
@@ -164,6 +168,7 @@ function installHomebrew() {
 
 function installTaglib() {
 	let step = 'Installing Taglib'
+	installingDependencyUpdate(step)
 	console.log(step)
 
 	execAsync(cmd.installTaglib)
@@ -179,7 +184,8 @@ function installTaglibRuby() {
 		return
 	}
 
-	let step = 'Installing taglib-ruby'
+	let step = 'Installing gem taglib-ruby'
+	installingDependencyUpdate(step)
 	console.log(step)
 
 	execAsync(cmd.installTaglibRuby)
@@ -192,6 +198,6 @@ function installTaglibRuby() {
 // INSTALLATION ERROR HANDLING
 
 function handleError(error, step) {
-	console.log(JSON.stringify(error), error)
+	console.error(JSON.stringify(error), error)
 	alert('Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
 }
