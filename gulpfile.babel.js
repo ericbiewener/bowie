@@ -13,6 +13,7 @@ import {jsTask, jsTaskWatch} from './gulp/javascript'
 import {htmlTask, htmlTaskWatch} from './gulp/html'
 import {rubyTask, rubyTaskWatch} from './gulp/ruby'
 
+
 // INDIVIDUAL TASKS
 
 gulp.task('serve', serveTask)
@@ -28,8 +29,10 @@ gulp.task('html:w', htmlTaskWatch)
 gulp.task('ruby', rubyTask)
 gulp.task('ruby:w', rubyTaskWatch)
 
+
 // BUILD & RUN
+
 gulp.task('default', () => runSequence(
 	['styles:w', 'html:w'], 'js', 'serve', 
-	() => settings.isStartup = false)
-)
+	() => settings.isStartup = false
+))

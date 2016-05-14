@@ -12,6 +12,8 @@ const {INSTALLING_DEPENDENCIES, DEPENDENCIES_INSTALLED, INTERNET_IS_DISCONNECTED
 let cmd = {
 		ping: 'ping -c1 google.com',
 
+		path: 'echo $PATH',
+
     	checkRvm: 'rvm -v',
     	checkBrew: 'brew -v',
     	checkTaglib: 'brew ls',
@@ -23,6 +25,7 @@ let cmd = {
     	installTaglib: 'brew install taglib',
     	installTaglibRuby: 'gem install taglib-ruby',
     },
+    rvmInstalled,
     homebrewInstalled,
     taglibInstalled,
     taglibRubyInstalled
@@ -31,37 +34,40 @@ export function checkDependencies(callback) {
 	let finalResult = {}
 
 	Promise.all([
+		execAsync(cmd.checkRvm).reflect(),
 		execAsync(cmd.checkBrew).reflect(),
 		execAsync(cmd.checkTaglib).reflect(),
 		execAsync(cmd.checkTaglibRuby).reflect(),
 	])
 	.then(results => {
-		homebrewInstalled = checkHomebrew(results[0]._settledValueField)
-		taglibRubyInstalled = checkTaglibRuby(results[2]._settledValueField)
+		rvmInstalled = checkRvm(results[0]._settledValueField)
+		homebrewInstalled = checkHomebrew(results[1]._settledValueField)
+		taglibRubyInstalled = checkTaglibRuby(results[3]._settledValueField)
 
 		// Since the version of taglib we're looking for would have been installed with
 		// the `brew` command, only check for it if Homebrew is already installed.
 		if (homebrewInstalled) {
-			taglibInstalled = checkTaglib(results[1]._settledValueField)
+			taglibInstalled = checkTaglib(results[2]._settledValueField)
 		}
 
-		if (!taglibInstalled || !taglibRubyInstalled) {
+		if (!rvmInstalled || !taglibInstalled || !taglibRubyInstalled) {
 			return execAsync('ping -c1 google.com')
 		} else {
 			return true
 		}
 	})
 	.then(() => {
-		if (!taglibInstalled) {
+		if (!rvmInstalled || !taglibInstalled || !taglibRubyInstalled) {
 			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
-			if (homebrewInstalled) {
-				installTaglib()
-			} else {
-				installHomebrew()
-			}
+		}
+
+		if (!rvmInstalled) {
+			installRvmAndRuby()
+		}
+		else if (!taglibInstalled) {
+			installTaglibOrHomebrew()
 		}
 		else if (!taglibRubyInstalled) {
-			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
 			installTaglibRuby()
 		}
 		else {
@@ -114,13 +120,25 @@ function checkIfCommandExists(scriptResult) {
 // INSTALLATION
 
 function installRvmAndRuby() {
-	let step = 'Installing RVM & Ruby'
+	let step = 'Installing key, RVM & Ruby'
 	console.log(step)
 
-	// exec(cmd.installHomebrew, function(error, stdout, stderr) {
-	// 	if (handleError(arguments, step)) return
-	// 	installTaglib()
-	// })
+	exec(`${cmd.installRvmPublicKey} && ${cmd.installRvmAndRuby}`, function(error, stdout, stderr) {
+		// We can ignore the error 'shell_session_update: command not found'
+		if (error && error.message.indexOf('shell_session_update: command not found') === -1) {
+			handleError(arguments, step)
+			return
+		}
+		installTaglibOrHomebrew()
+	})
+}
+
+function installTaglibOrHomebrew() {
+	if (homebrewInstalled) {
+		installTaglib()
+	} else {
+		installHomebrew()
+	}
 }
 
 function installHomebrew() {
@@ -166,14 +184,15 @@ function handleError(scriptOutput, step) {
 	    stderr = scriptOutput[2]
 	
 	if (error) {
-		let errorJSON = JSON.stringify({
+		let errorObj = {
 			error: error,
 			stdout: stdout,
 			stderr: stderr,
 			step: step
-		})
+		}
+		let errorJSON = JSON.stringify(errorObj)
 
-		console.log(errorJSON)
+		console.log(errorJSON, errorObj)
 		alert('Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
 
 		return true
