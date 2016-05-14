@@ -12,8 +12,6 @@ const {INSTALLING_DEPENDENCIES, DEPENDENCIES_INSTALLED, INTERNET_IS_DISCONNECTED
 let cmd = {
 		ping: 'ping -c1 google.com',
 
-		path: 'echo $PATH',
-
     	checkRvm: 'rvm -v',
     	checkBrew: 'brew -v',
     	checkTaglib: 'brew ls',
@@ -24,13 +22,15 @@ let cmd = {
     	installHomebrew: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
     	installTaglib: 'brew install taglib',
     	installTaglibRuby: 'gem install taglib-ruby',
+
+    	sourceRvm: 'source ~/.rvm/scripts/rvm',
     },
     rvmInstalled,
     homebrewInstalled,
     taglibInstalled,
     taglibRubyInstalled
 
-export function checkDependencies(callback) {
+export default function checkDependencies(callback) {
 	let finalResult = {}
 
 	Promise.all([
@@ -51,16 +51,13 @@ export function checkDependencies(callback) {
 		}
 
 		if (!rvmInstalled || !taglibInstalled || !taglibRubyInstalled) {
-			return execAsync('ping -c1 google.com')
+			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
+			return execAsync(cmd.ping)
 		} else {
 			return true
 		}
 	})
 	.then(() => {
-		if (!rvmInstalled || !taglibInstalled || !taglibRubyInstalled) {
-			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
-		}
-
 		if (!rvmInstalled) {
 			installRvmAndRuby()
 		}
@@ -73,8 +70,10 @@ export function checkDependencies(callback) {
 		else {
 			dependencyStatusUpdate(DEPENDENCIES_INSTALLED)
 		}
+
+		return null
 	})
-	.catch((error) => {
+	.catch(error => {
 		console.log(error)
 		
 		if (error.cmd === cmd.ping) {
@@ -118,19 +117,28 @@ function checkIfCommandExists(scriptResult) {
 
 
 // INSTALLATION
+// return null in all methods since they provide their own promise error handling.
+// We don't need to pass the promise result back up the promise chain.
 
 function installRvmAndRuby() {
 	let step = 'Installing key, RVM & Ruby'
 	console.log(step)
 
-	exec(`${cmd.installRvmPublicKey} && ${cmd.installRvmAndRuby}`, function(error, stdout, stderr) {
-		// We can ignore the error 'shell_session_update: command not found'
-		if (error && error.message.indexOf('shell_session_update: command not found') === -1) {
-			handleError(arguments, step)
-			return
-		}
-		installTaglibOrHomebrew()
-	})
+	cmd = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby + ' && ' + cmd.sourceRvm
+
+	execAsync(cmd)
+		.then(installTaglibOrHomebrew)
+		.catch(error => {
+			// We can ignore the error 'shell_session_update: command not found'
+			if (error.message.indexOf('shell_session_update: command not found') === -1) {
+				handleError(error, step)
+				return
+			}
+			
+			installTaglibOrHomebrew()
+		})
+
+	return null
 }
 
 function installTaglibOrHomebrew() {
@@ -139,62 +147,51 @@ function installTaglibOrHomebrew() {
 	} else {
 		installHomebrew()
 	}
+
+	return null
 }
 
 function installHomebrew() {
 	let step = 'Installing Homebrew'
 	console.log(step)
 
-	exec(cmd.installHomebrew, function(error, stdout, stderr) {
-		if (handleError(arguments, step)) return
-		installTaglib()
-	})
+	execAsync(cmd.installHomebrew)
+		.then(installTaglib)
+		.catch(error => handleError(error, step))
+
+	return null
 }
 
 function installTaglib() {
 	let step = 'Installing Taglib'
 	console.log(step)
 
-	exec(cmd.installTaglib, function(error, stdout, stderr) {
-		if (handleError(arguments, step)) return
-		installTaglibRuby()
-	})
+	execAsync(cmd.installTaglib)
+		.then(installTaglibRuby)
+		.catch(error => handleError(error, step))
+
+	return null
 }
 
 function installTaglibRuby() {
 	if (taglibRubyInstalled) {
 		dependencyStatusUpdate(DEPENDENCIES_INSTALLED)
+		return
 	}
-	else {
-		let step = 'Installing taglib-ruby'
-		console.log(step)
 
-		exec(cmd.installTaglibRuby, function(error, stdout, stderr) {
-			if (handleError(arguments, step)) return
-			dependencyStatusUpdate(DEPENDENCIES_INSTALLED)
-		})
-	}
+	let step = 'Installing taglib-ruby'
+	console.log(step)
+
+	execAsync(cmd.installTaglibRuby)
+		.then(() => dependencyStatusUpdate(DEPENDENCIES_INSTALLED))
+		.catch(error => handleError(error, step))
+
+	return null
 }
 
 // INSTALLATION ERROR HANDLING
 
-function handleError(scriptOutput, step) {
-	let error = scriptOutput[0],
-	    stdout = scriptOutput[1],
-	    stderr = scriptOutput[2]
-	
-	if (error) {
-		let errorObj = {
-			error: error,
-			stdout: stdout,
-			stderr: stderr,
-			step: step
-		}
-		let errorJSON = JSON.stringify(errorObj)
-
-		console.log(errorJSON, errorObj)
-		alert('Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
-
-		return true
-	}
+function handleError(error, step) {
+	console.log(JSON.stringify(error), error)
+	alert('Whoa, something went wrong when trying to install the required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
 }

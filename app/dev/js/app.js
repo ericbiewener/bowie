@@ -3,7 +3,7 @@ import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 
 import store from 'js/redux/store'
-import {checkDependencies} from 'js/dependencies/check-dependencies'
+import checkDependencies from 'js/dependencies/check-dependencies'
 import {DependencyActions} from 'js/dependencies/dependencies-redux'
 import {openTutorial} from 'js/tutorial/playback-controls'
 import Root from 'js/root/RootContainer'

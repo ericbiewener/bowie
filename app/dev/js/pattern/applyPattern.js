@@ -36,7 +36,7 @@ function applyPattern(songsInput, patternsInput, parentDirectories) {
 		    currentPatternIsUnmapped = !pattern.mapping
 
 		if (prevPatternIsUnmapped && currentPatternIsUnmapped) {
-			_.last(consolidatedPatterns).text += pattern.text
+			consolidatedPatterns.slice(-1).text += pattern.text
 		} else {
 			consolidatedPatterns.push(pattern)
 		}

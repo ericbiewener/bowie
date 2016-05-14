@@ -1,3 +1,3 @@
-import {cloneDeep, each, size, isArray, last} from 'lodash'
+import {cloneDeep, each, size, isArray} from 'lodash'
 
-export default {cloneDeep, each, size, isArray, last}
+export default {cloneDeep, each, size, isArray}
