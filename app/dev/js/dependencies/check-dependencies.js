@@ -161,7 +161,9 @@ function sourceRvm() {
 }
 
 function installTaglibRuby() {
-	installScript(taglibRubyInstalled, cmd.installTaglibRuby, 'Installing gem taglib-ruby', () => {
+	let fullCommand = cmd.sourceRvm + ' && ' + cmd.installTaglibRuby
+	
+	installScript(taglibRubyInstalled, fullCommand, 'Installing gem taglib-ruby', () => {
 		updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES)
 	})
 }
