@@ -148,12 +148,16 @@ function installGpg() {
 }
 
 function installRvmAndRuby() {
-	let fullCommand = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby + ' && ' + cmd.sourceRvm
+	let fullCommand = cmd.installRvmPublicKey + ' && ' + cmd.installRvmAndRuby
 
 	installScript(rvmInstalled, fullCommand, 'Installing RVM & Ruby', installTaglibRuby, error => (
 		// Ignore this error
 		error.indexOf('shell_session_update: command not found') === -1
 	))
+}
+
+function sourceRvm() {
+	installScript(false, cmd.sourceRvm, 'Sourcing RVM', installTaglibRuby)
 }
 
 function installTaglibRuby() {
