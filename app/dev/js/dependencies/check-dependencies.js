@@ -20,10 +20,11 @@ let cmd = {
     	checkRvm: 'rvm -v',
     	checkTaglibRuby: 'gem list taglib-ruby',
 
-    	installRvmPublicKey: 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3',
-    	installRvmAndRuby: '\curl -sSL https://get.rvm.io | bash -s stable --ruby',
     	installHomebrew: '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"',
     	installTaglib: 'brew install taglib',
+    	installGpg: 'brew install gpg',
+    	installRvmPublicKey: 'gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3',
+    	installRvmAndRuby: '\curl -sSL https://get.rvm.io | bash -s stable --ruby',
     	installTaglibRuby: 'gem install taglib-ruby',
 
     	sourceRvm: 'source ~/.rvm/scripts/rvm',
@@ -143,7 +144,7 @@ function installTaglib() {
 }
 
 function installGpg() {
-	installScript(gpgInstalled, cmd.installGpg, 'Installing Taglib', installRvmAndRuby)
+	installScript(gpgInstalled, cmd.installGpg, 'Installing gpg', installRvmAndRuby)
 }
 
 function installRvmAndRuby() {
