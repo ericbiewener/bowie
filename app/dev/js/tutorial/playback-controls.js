@@ -1,4 +1,4 @@
-import store from 'js/redux/store'
+import store from 'js/store/store'
 import {TutorialActionCreators} from 'js/tutorial/tutorial-redux'
 import recordedActions from 'js/tutorial/recorded-actions'
 

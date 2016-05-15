@@ -39,11 +39,11 @@
 	@include dropzone-showing;
 }
 
-.appIsLaunching.DEPENDENCIES_INSTALLED .dropzone .dropzone-message {
+.appIsLaunching.FINISHED_INSTALLING_DEPENDENCIES .dropzone .dropzone-message {
 	display: block;
 }
 
-.DEPENDENCIES_INSTALLED:not(.appIsLaunching) {
+.FINISHED_INSTALLING_DEPENDENCIES:not(.appIsLaunching) {
 	.dropzone {
 		background: none;
 	}

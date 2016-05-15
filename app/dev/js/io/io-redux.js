@@ -1,7 +1,7 @@
 import undoable, {excludeAction, ActionCreators} from 'redux-undo'
 
 import {saveTags} from 'js/io/io'
-import store from 'js/redux/store'
+import store from 'js/store/store'
 
 
 export const IoActions = {

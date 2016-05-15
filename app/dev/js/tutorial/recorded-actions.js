@@ -465,7 +465,7 @@ const main = [
 			"timing": 0,
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 0,
 		    "textStart": 0,
@@ -478,7 +478,7 @@ const main = [
 			"mapping": "Artist"
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 1,
 		    "textStart": 1,
@@ -491,7 +491,7 @@ const main = [
 			"mapping": "Year"
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 3,
 		    "textStart": 1,
@@ -515,12 +515,12 @@ const main = [
 			"timing": 0,
 		},
 		{
-			"type": "REMOVE_PATTERN",
+			"type": "DELETE_PATTERN",
 			"timing": 1000,
 			"patternIndex": 4
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 3,
 		    "textStart": 1,
@@ -533,7 +533,7 @@ const main = [
 			"mapping": "Album"
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 5,
 		    "textStart": 1,
@@ -546,7 +546,7 @@ const main = [
 			"mapping": "Track"
 		},
 		{
-		    "type": "ADD_UNMAPPED_PATTERN",
+		    "type": "CREATE_UNMAPPED_PATTERN",
 		    "timing": 500,
 		    "patternIndex": 7,
 		    "textStart": 1,

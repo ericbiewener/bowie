@@ -4,7 +4,7 @@ import path from 'path'
 
 import {APP_ROOT} from 'js/io/io-constants'
 import {IoActionCreators} from 'js/io/io-redux'
-import store from 'js/redux/store'
+import store from 'js/store/store'
 
 
 const TAG_READER_FILEPATH = path.join(APP_ROOT, 'rb', 'read_tags.rb')

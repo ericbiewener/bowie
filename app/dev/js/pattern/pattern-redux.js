@@ -4,16 +4,16 @@ import {IoActions} from 'js/io/io-redux'
 
 
 export const PatternActions = {
-	ADD_UNMAPPED_PATTERN: 'ADD_UNMAPPED_PATTERN',
+	CREATE_UNMAPPED_PATTERN: 'CREATE_UNMAPPED_PATTERN',
 	MAP_PATTERN: 'MAP_PATTERN',
-	REMOVE_PATTERN: 'REMOVE_PATTERN',
+	DELETE_PATTERN: 'DELETE_PATTERN',
 	CHANGE_NUMBER_OF_DIRECTORIES: 'CHANGE_NUMBER_OF_DIRECTORIES',
 }
 
 
 export const PatternActionCreators = {
 	createUnmappedPattern: (patternIndex, textStart, textEnd) => ({
-		type: PatternActions.ADD_UNMAPPED_PATTERN,
+		type: PatternActions.CREATE_UNMAPPED_PATTERN,
 		patternIndex,
 		textStart,
 		textEnd,
@@ -26,7 +26,7 @@ export const PatternActionCreators = {
 	}),
 
 	deletePattern: patternIndex => ({
-		type: PatternActions.REMOVE_PATTERN,
+		type: PatternActions.DELETE_PATTERN,
 		patternIndex,
 	}),
 
@@ -47,7 +47,7 @@ export function patterns(state=[], action, parentDirectories, filepath) {
 			let remainingPath = removeDirectories(filepath, parentDirectories)
 			return preservePatternsForNewText(state, remainingPath)
 
-		case PatternActions.ADD_UNMAPPED_PATTERN:
+		case PatternActions.CREATE_UNMAPPED_PATTERN:
 			return insertPattern(state, action.patternIndex, action.textStart, action.textEnd)
 
 		case PatternActions.MAP_PATTERN:
@@ -58,7 +58,7 @@ export function patterns(state=[], action, parentDirectories, filepath) {
 			newPattern.mapping = action.mapping
 			return [...startPatterns, newPattern, ...endPatterns]
 
-		case PatternActions.REMOVE_PATTERN:
+		case PatternActions.DELETE_PATTERN:
 			return deletePattern(state, action.patternIndex)
 	}
 

@@ -1,16 +1,16 @@
 import {createStore, applyMiddleware} from 'redux'
 
 import _ from 'js/lodash-modules'
-import combineReducers from 'js/redux/combineReducers'
-import {getSongsBeingViewed, hasMappedPatterns, buildRootClass} from 'js/redux/computed-state'
+import combineReducers from 'js/store/combineReducers'
+import {getSongsBeingViewed, hasMappedPatterns, buildRootClass} from 'js/store/computed-state'
 import {originalTags, ioMiddleware} from 'js/io/io-redux'
 import {patterns, parentDirectories} from 'js/pattern/pattern-redux'
 import {manualTagEdits, tagsBeingViewed} from 'js/tag-editor/tag-editor-redux'
 import {isRunningTutorial, tutorialText, isShowingTutorialText, TutorialActions} from 'js/tutorial/tutorial-redux'
-import {dependencyStatus, dependencyBeingInstalled, dependencyInstallProgress} from 'js/dependencies/dependencies-redux'
+import {dependencyStatus, dependencyBeingInstalled, updateDependencyInstallProgress, dependencyMiddleware} from 'js/dependencies/dependencies-redux'
 import {TagVersion} from 'js/tag-editor/tag-editor-constants'
-import subscribe from 'js/redux/subscribe'
-import {appIsLaunching} from 'js/redux/reducers'
+import subscribe from 'js/store/subscribe'
+import {appIsLaunching} from 'js/store/reducers'
 
 const combinedReducers = combineReducers({
 	appIsLaunching,
@@ -22,7 +22,7 @@ const combinedReducers = combineReducers({
 	isShowingTutorialText,
 	dependencyStatus,
 	dependencyBeingInstalled,
-	dependencyInstallProgress,
+	updateDependencyInstallProgress,
 })
 
 function rootReducer(state={}, action) {
@@ -54,7 +54,7 @@ function rootReducer(state={}, action) {
 
 const store = createStore(
 	rootReducer,
-	applyMiddleware(ioMiddleware)
+	applyMiddleware(ioMiddleware, dependencyMiddleware)
 )
 
 subscribe(store)

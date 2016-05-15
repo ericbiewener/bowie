@@ -1,16 +1,15 @@
 const require = window.require
-// const exec = require('child_process').exec
 const childProcess = require('child_process')
 const exec = childProcess.exec
 const spawn = childProcess.spawn
 import Promise from 'bluebird'
 
-import {dependencyStatusUpdate, installingDependencyUpdate, dependencyProgressUpdate} from 'js/app'
-import {DependencyActions} from 'js/dependencies/dependencies-redux'
+import {DependencyActions, updateDependencyStatus} from 'js/dependencies/dependencies-redux'
 
 
 const execAsync = Promise.promisify(exec)
-const {INSTALLING_DEPENDENCIES, DEPENDENCIES_INSTALLED, INTERNET_IS_DISCONNECTED} = DependencyActions
+const {	INSTALL_DEPENDENCIES, INSTALL_DEPENDENCY, UPDATE_DEPENDENCY_INSTALL_PROGRESS, 
+	    FINISHED_INSTALLING_DEPENDENCIES, INTERNET_IS_DISCONNECTED } = DependencyActions
 
 let cmd = {
 		ping: 'ping -c1 google.com',
@@ -60,7 +59,7 @@ export default function checkDependencies(callback) {
 		// Taglib & taglib-ruby are the only true dependences, so only kick off the
 		// full depdency installation chain if these are missing
 		if (!taglibInstalled || !taglibRubyInstalled) {
-			dependencyStatusUpdate(INSTALLING_DEPENDENCIES)
+			updateDependencyStatus(INSTALL_DEPENDENCIES)
 			return execAsync(cmd.ping)
 		} else {
 			return true
@@ -74,7 +73,7 @@ export default function checkDependencies(callback) {
 		console.log(error)
 		
 		if (error.cmd === cmd.ping) {
-			dependencyStatusUpdate(INTERNET_IS_DISCONNECTED)
+			updateDependencyStatus(INTERNET_IS_DISCONNECTED)
 		} else {
 			alert('Whoaaa, something went wrong when checking for required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
 		}
@@ -155,7 +154,7 @@ function installRvmAndRuby() {
 
 function installTaglibRuby() {
 	installScript(taglibRubyInstalled, cmd.installTaglibRuby, 'Installing gem taglib-ruby', () => {
-		dependencyStatusUpdate(DEPENDENCIES_INSTALLED)
+		updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES)
 	})
 }
 
@@ -165,14 +164,14 @@ function installScript(isInstalled, command, message, successCallback, customErr
 		return
 	}
 
-	installingDependencyUpdate(message)
+	updateDependencyStatus(INSTALL_DEPENDENCY, message)
 	console.log(message)
 
-	let hasError,
-	    script = spawn('/bin/sh', ['-c', command])
+	let script = spawn('/bin/sh', ['-c', command]),
+	    hasError
 
 	script.stdout.on('data', data => {
-		dependencyProgressUpdate(data.toString())
+		updateDependencyStatus(UPDATE_DEPENDENCY_INSTALL_PROGRESS, data.toString())
 	})
 
 	script.stdout.on('close', function(){

@@ -65,13 +65,13 @@ export function tagsBeingViewed(state=TagVersion.ORIGINAL, action, hasMappedPatt
 			return TagVersion.ORIGINAL
 
 		case TagEditorActions.VIEW_PATTERN_TAGS:
-		case PatternActions.ADD_UNMAPPED_PATTERN:
+		case PatternActions.CREATE_UNMAPPED_PATTERN:
 			return TagVersion.PATTERN
 
 		case TagEditorActions.VIEW_EDITED_TAGS:
 			return TagVersion.EDITED
 
-		case PatternActions.REMOVE_PATTERN:
+		case PatternActions.DELETE_PATTERN:
 			return hasMappedPatterns ? TagVersion.PATTERN : TagVersion.ORIGINAL
 		
 		case TagEditorActions.INPUT_BLURRED:

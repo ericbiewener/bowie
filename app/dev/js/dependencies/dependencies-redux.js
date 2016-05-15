@@ -1,29 +1,30 @@
+import store from 'js/store/store'
+
+import maybeShowTutorial from 'js/tutorial/maybeShowTutorial'
+
+
 export const DependencyActions = {
-	INSTALLING_DEPENDENCIES: 'INSTALLING_DEPENDENCIES',
-	INSTALLING_DEPENDENCY: 'INSTALLING_DEPENDENCY',
-	DEPENDENCY_INSTALL_PROGRESS: 'DEPENDENCY_INSTALL_PROGRESS',
-	DEPENDENCIES_INSTALLED: 'DEPENDENCIES_INSTALLED',
+	INSTALL_DEPENDENCIES: 'INSTALL_DEPENDENCIES',
+	INSTALL_DEPENDENCY: 'INSTALL_DEPENDENCY',
+	UPDATE_DEPENDENCY_INSTALL_PROGRESS: 'UPDATE_DEPENDENCY_INSTALL_PROGRESS',
+	FINISHED_INSTALLING_DEPENDENCIES: 'FINISHED_INSTALLING_DEPENDENCIES',
 	INTERNET_IS_DISCONNECTED: 'INTERNET_IS_DISCONNECTED',
 }
 
 
-export const DependencyActionCreators = {
-	installingDependency: dependencyMessage => ({
-		type: DependencyActions.INSTALLING_DEPENDENCY,
-		dependencyMessage,
-	}),
-
-	dependencyInstallProgress: cliMessage => ({
-		type: DependencyActions.DEPENDENCY_INSTALL_PROGRESS,
-		cliMessage,
-	}),
+// Takes the place of standard Action Creators
+export function updateDependencyStatus(type, message) {
+	store.dispatch({
+		type: type,
+		message: message
+	})
 }
 
 
 export function dependencyStatus(state='', action) {
 	switch (action.type) {
-		case DependencyActions.INSTALLING_DEPENDENCIES:
-		case DependencyActions.DEPENDENCIES_INSTALLED:
+		case DependencyActions.INSTALL_DEPENDENCIES:
+		case DependencyActions.FINISHED_INSTALLING_DEPENDENCIES:
 		case DependencyActions.INTERNET_IS_DISCONNECTED:
 			return action.type
 	}
@@ -32,23 +33,34 @@ export function dependencyStatus(state='', action) {
 
 export function dependencyBeingInstalled(state='', action) {
 	switch (action.type) {
-		case DependencyActions.INSTALLING_DEPENDENCY:
-			return action.dependencyMessage
+		case DependencyActions.INSTALL_DEPENDENCY:
+			return action.message
 			
-		case DependencyActions.DEPENDENCIES_INSTALLED:
+		case DependencyActions.FINISHED_INSTALLING_DEPENDENCIES:
 			return ''
 	}
 	return state
 }
 
-export function dependencyInstallProgress(state='', action) {
+export function updateDependencyInstallProgress(state='', action) {
 	switch (action.type) {
-		case DependencyActions.DEPENDENCY_INSTALL_PROGRESS:
-			return action.cliMessage
+		case DependencyActions.UPDATE_DEPENDENCY_INSTALL_PROGRESS:
+			return action.message
 			
-		case DependencyActions.INSTALLING_DEPENDENCY:
-		case DependencyActions.DEPENDENCIES_INSTALLED:
+		case DependencyActions.INSTALL_DEPENDENCY:
+		case DependencyActions.FINISHED_INSTALLING_DEPENDENCIES:
 			return ''
 	}
 	return state
+}
+
+
+export const dependencyMiddleware = ({ getState }) => next => action => {
+	const nextState = next(action)
+
+	if (action.type === DependencyActions.FINISHED_INSTALLING_DEPENDENCIES) {
+		maybeShowTutorial()
+	}
+
+	return nextState
 }
