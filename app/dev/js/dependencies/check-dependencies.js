@@ -109,14 +109,17 @@ function checkTaglibRuby(scriptResult) {
 }
 
 function checkIfBrewPackageExists(scriptResult) {
-	return scriptResult.indexOf('No such keg') === -1
+	return checkIfInstalled(scriptResult, 'No such keg')
 }
 
 function checkIfCommandExists(scriptResult) {
+	return checkIfInstalled(scriptResult, 'command not found')
+}
+
+function checkIfInstalled(scriptResult, stringToCheck) {
 	if (typeof scriptResult === 'string') return true
 
-	// Only return false if the command failed for the right reason.
-	if (scriptResult.message.indexOf('command not found') > -1) return false
+	if (scriptResult.message.indexOf(stringToCheck) > -1) return false
 	throw(new Error(`'${cmd.checkBrew}' command failed with message:\n\n${scriptResult.message}.`))
 }
 
