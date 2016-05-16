@@ -39,6 +39,38 @@ let cmd = {
 export default function checkDependencies(callback) {
 	let finalResult = {}
 
+
+
+
+
+
+
+	updateDependencyStatus(INSTALL_DEPENDENCIES)
+
+	let script = spawn('/Users/ericbiewener/Google Drive/Personal/Dev/_Projects/BowieRedux/app/dev/js/dependencies/installer.sh')
+
+	script.stdout.on('data', data => {
+		updateDependencyStatus(UPDATE_DEPENDENCY_INSTALL_PROGRESS, data.toString())
+	})
+
+	script.stdout.on('close', function(){
+		alert('done!')
+	})
+
+	script.stderr.on('data', data => {
+		let error = data.toString()
+		console.log(error)
+	})
+
+
+
+
+
+
+
+
+	return	
+
 	Promise.all([
 		execAsync(cmd.checkBrew).reflect(),
 		execAsync(cmd.checkTaglib).reflect(),
