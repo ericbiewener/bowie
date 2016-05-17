@@ -1,5 +1,5 @@
-require = window.require;
-const {spawn, execFile} = require('child_process');
+require = window.require
+const {spawn, execFile} = require('child_process')
 import path from 'path'
 
 import {APP_ROOT} from 'js/io/io-constants'

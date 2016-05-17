@@ -1,4 +1,4 @@
-#!/Users/ericbiewener/.rvm/rubies/ruby-2.3.0/bin/ruby
+#!/usr/bin/env ruby
 
 require 'taglib'
 require 'json'
