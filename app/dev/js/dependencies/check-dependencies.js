@@ -39,9 +39,6 @@ let cmd = {
 export default function checkDependencies(callback) {
 	let finalResult = {}
 
-	updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES)
-	return
-
 
 
 
