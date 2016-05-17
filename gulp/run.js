@@ -1,11 +1,11 @@
 import {spawn} from 'child_process'
 import BrowserSync from 'browser-sync'
-import {paths} from './_settings'
+import PATHS from './_paths'
 
 
 export const browserSync = BrowserSync.create()
 
-export function serveTask(cb) {
+export function runTask() {
 
 	function runElectronApp(path, env={}) {
 	  const electron = require('electron-prebuilt')
@@ -43,12 +43,8 @@ export function serveTask(cb) {
 	}
 
 	browserSync.init(options, (err, bs) => {
-		if (err) return cb(err)
-
-		runElectronApp(paths.main, {
+		runElectronApp(PATHS.main, {
 			BROWSER_SYNC_CLIENT_URL: getClientUrl(bs.options)
 		})
-
-		cb()
 	})
 }

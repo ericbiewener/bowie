@@ -1,13 +1,13 @@
 import gulp from 'gulp'
-import {browserSync} from './serve'
-import {paths} from './_settings'
+import {browserSync} from './run'
+import PATHS from './_paths'
 
 
 export function htmlTask() {
-	gulp.src(paths.client.html)
+	gulp.src(PATHS.client.html)
 		.pipe(browserSync.stream())
 }
 
 export function htmlTaskWatch() {
-	gulp.watch(paths.client.html, htmlTask);
+	gulp.watch(PATHS.client.html, htmlTask);
 }

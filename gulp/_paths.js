@@ -1,4 +1,4 @@
-export const paths = {
+const PATHS = {
   main: './main.js',
   browserifyImportRoot: './app/dev/',
 
@@ -10,6 +10,4 @@ export const paths = {
   },
 }
 
-export const settings = {
-  isStartup: true
-}
+export default PATHS

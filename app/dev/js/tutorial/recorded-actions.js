@@ -926,9 +926,16 @@ const main = [
 		{
 			"type": "CHANGE_TUTORIAL_TEXT",
 			"timing": 1000,
-			"text": "That's it!",
+			"text": "Once you're satisfied, you can drop new files onto the app to start tagging them.",
 		},
 	],
+	[
+		{
+			"type": "CHANGE_TUTORIAL_TEXT",
+			"timing": 1000,
+			"text": "That's it!",
+		},
+	]
 ]
 
 export default {init, welcome, main}

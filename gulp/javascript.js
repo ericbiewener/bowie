@@ -1,40 +1,41 @@
 import {exec} from 'child_process'
 import gulp from 'gulp'
-import gulpif from 'gulp-if'
 import source from 'vinyl-source-stream'
 import browserify from 'browserify'
 import watchify from 'watchify'
 import babelify from 'babelify'
 import {dialog} from './_helpers'
-import {paths, settings} from './_settings'
-import {browserSync} from './serve'
+import PATHS from './_paths'
+import {browserSync} from './run'
 
 
-const Browserify = browserify({
-	cache: {},
-	packageCache: {},
-	entries: paths.client.js.dev,
-	debug: true,
-	plugin: [watchify],
-	paths: ['./node_modules', paths.browserifyImportRoot]
-})
-.transform(babelify, {
-	presets: ['es2015', 'react'],
-	plugins: ['transform-object-rest-spread']
-})
+export default function jsTask() {
+	function bundle() {
+		return Browserify.bundle()
+			.on('error', emitError)
+			.pipe(source('app.js'))
+			.pipe(gulp.dest(PATHS.client.js.build))
+			.pipe(browserSync.stream())
+	}
 
-Browserify.on('update', jsTask)
-Browserify.on('log', console.log)
+	const Browserify = browserify({
+		cache: {},
+		packageCache: {},
+		entries: PATHS.client.js.dev,
+		debug: true,
+		plugin: [watchify],
+		paths: ['./node_modules', PATHS.browserifyImportRoot]
+	})
+	.transform(babelify, {
+		presets: ['es2015', 'react'],
+		plugins: ['transform-object-rest-spread']
+	})
 
-export function jsTask() {
-	Browserify.bundle()
-		.on('error', emitError)
-		.pipe(source('app.js'))
-		.pipe(gulp.dest(paths.client.js.build))
-		.pipe(gulpif(!settings.isStartup, browserSync.stream()))
+	Browserify.on('update', bundle)
+	Browserify.on('log', console.log)
+
+	return bundle
 }
-
-jsTask()
 
 function emitError(error) {
 	console.log(error)
