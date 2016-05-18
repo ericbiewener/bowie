@@ -57,6 +57,7 @@ export default function checkDependencies(callback) {
 			gpgInstalled = checkGpg(results[2])
 		}
 
+		console.log({homebrewInstalled, taglibInstalled, gpgInstalled, rvmInstalled, taglibRubyInstalled})
 
 		// Taglib & taglib-ruby are the only true dependences, so only kick off the
 		// full depdency installation chain if these are missing
@@ -119,8 +120,8 @@ function checkIfInstalled(scriptResult, stringToCheck) {
 	console.log('Script Result:\n\n' + result)
 	if (typeof result === 'string') return true
 
-	if (scriptResult.message.indexOf(stringToCheck) > -1) return false
-	throw(new Error('Command failed with message:\n\n' + scriptResult.message))
+	if (result.message.indexOf(stringToCheck) > -1) return false
+	throw(new Error('Command failed with message:\n\n' + result.message))
 }
 
 
@@ -147,55 +148,28 @@ function installGpg() {
 	installScript(gpgInstalled, bash.INSTALL_GPG, 'Installing gpg', installRvmAndRuby)
 }
 
-// function installAllRuby() {
-// 	let fullCommand = [
-// 		// cmd.installRvmPublicKey,
-// 		// cmd.installRvmAndRuby,
-// 		// cmd.sourceRvm,
-// 		// cmd.installTaglibRuby,
-// 	]
-// 	.join(';') // using semi-colon to allow commands to proceed even if there is an error
-
-// 	installScript(
-// 		taglibRubyInstalled,
-// 		fullCommand,
-// 		'Installing RVM, Ruby, and taglib-ruby',
-// 		() => updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES),
-// 		error => error.indexOf('shell_session_update: command not found') === -1 // Ignore this error
-// 	)
-// }
-
 function installRvmAndRuby() {
-	installScript(false, bash.INSTALL_RVM_AND_RUBY, 'Installing RVM & Ruby', installTaglibRuby,
-		error => error.indexOf('shell_session_update: command not found') === -1)
+	installScript(
+		rvmInstalled, 
+		bash.INSTALL_RVM_AND_RUBY, 
+		'Installing RVM & Ruby', 
+		installTaglibRuby,
+		handleRvmInstallError
+	)
 }
 
 function installTaglibRuby() {
-	let message = 'Installing taglib-ruby'
-	updateDependencyStatus(INSTALL_DEPENDENCY, message)
-	console.log(message)
+	installScript(
+		taglibRubyInstalled, 
+		bash.INSTALL_TAGLIB_RUBY, 
+		'Installing taglib-ruby', 
+		() => updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES),
+		handleRvmInstallError
+	)
+}
 
-	let script = spawn(INSTALL_PATH),
-	    hasError
-
-	script.stdout.on('data', data => {
-		updateDependencyStatus(UPDATE_DEPENDENCY_INSTALL_PROGRESS, data.toString())
-	})
-
-	script.stdout.on('close', function(){
-		if (hasError) {
-			alert(errorAlert)
-			return
-		}
-
-		updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES)
-	})
-
-	script.stderr.on('data', data => {
-		let error = data.toString()
-		// hasError = customErrorChecker ? customErrorChecker(error) : true
-		console.log(error)
-	})
+function handleRvmInstallError(error) {
+	return error.indexOf('shell_session_update: command not found') === -1
 }
 
 function installScript(isInstalled, scriptPath, message, successCallback, customErrorChecker) {
