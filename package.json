@@ -6,7 +6,9 @@
   "repository": "https://github.com/ericbiewener/bowie",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "package": "asar pack ./Bowie-darwin-x64/Bowie.app/Contents/Resources/app ./Bowie-darwin-x64/Bowie.app/Contents/Resources/app.asar",
+    "build": "electron-packager . Bowie --platform=darwin --arch=x64 --ignore=node_modules/electron-*"
   },
   "dependencies": {
     "bluebird": "^3.3.5",
