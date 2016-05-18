@@ -62,13 +62,13 @@ export default function checkDependencies(callback) {
 		// Taglib & taglib-ruby are the only true dependences, so only kick off the
 		// full depdency installation chain if these are missing
 		if (!taglibInstalled || !taglibRubyInstalled || true) {
-			updateDependencyStatus(INSTALL_DEPENDENCIES)
 			return execFilePromise(bash.PING)
 		} else {
 			return true
 		}
 	})
 	.then(() => {
+		updateDependencyStatus(INSTALL_DEPENDENCIES)
 		installHomebrew()
 		return null
 	})
