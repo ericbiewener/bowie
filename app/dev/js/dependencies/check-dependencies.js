@@ -140,6 +140,8 @@ function checkIfInstalled(scriptResult, stringToCheck) {
 
 function installHomebrew() {
 	updateDependencyStatus(INSTALL_DEPENDENCIES)
+
+	// Currently skipping Homebrew installation
 	installTaglib()
 	// installScript(homebrewInstalled, Bash.installHomebrew, 'Installing Homebrew', installTaglib)
 }

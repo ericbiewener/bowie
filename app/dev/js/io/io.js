@@ -19,8 +19,9 @@ export function readFiles(files) {
 	    stdout = []
 	
 	// Don't bother with `stderr` or `on.('error')`. The sourcing of RVM in ruby-launcher.sh
-	// will often throw an error even though it gets the job done. At the end of the day,
-	// we only care if we can parse the stdout, so just catch errors at that point.
+	// will throw an error because it is being run outside of a shell, but this can be ignored
+	// because it gets the job done. At the end of the day, we only care if we can parse stdout,
+	// so just catch errors at that point.
 	tagParser.stdout.on('data', data => stdout = [...stdout, data]) 
 	tagParser.on('close', () => {
 		try {
