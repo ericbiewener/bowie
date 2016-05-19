@@ -15,6 +15,10 @@ const TRY_AGAIN_TEXT = 'Try again ›'
 
 
 const DependencyInfo = React.createClass({
+	getInitialState: function() {
+		return { tryAgainIsDisabled: false }
+	},
+
 	getNoInternetText: function() {
 		let text = MESSAGES[messageIndex]
 		if (messageIndex < maxMessageIndex) messageIndex++
@@ -22,6 +26,8 @@ const DependencyInfo = React.createClass({
 	},
 
 	onClick: function() {
+		this.setState({ tryAgainIsDisabled: true })
+
 		this.tryAgainEl.textContent = 'Checking...'
 
 		// Need setTimeout to make it clear to the user that we are actually
@@ -30,6 +36,7 @@ const DependencyInfo = React.createClass({
 			this.props.onClick()
 			this.noInternetEl.textContent = this.getNoInternetText()
 			this.tryAgainEl.textContent = TRY_AGAIN_TEXT
+			this.setState({ tryAgainIsDisabled: false })
 		}, 1000)
 	},
 
@@ -43,7 +50,7 @@ const DependencyInfo = React.createClass({
 					</div>
 					<div className='no-internet'>
 						<div className='text' ref={el => this.noInternetEl = el}>It appears that you aren't connected to the internet. The first time using this app, we need to download and install some dependencies. Please check your internet connection.</div>
-						<a onClick={this.onClick} ref={el => this.tryAgainEl = el}>{TRY_AGAIN_TEXT}</a>
+						<a onClick={this.state.tryAgainIsDisabled ? null : this.onClick} ref={el => this.tryAgainEl = el}>{TRY_AGAIN_TEXT}</a>
 					</div>
 				</div>
 	}

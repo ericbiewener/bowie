@@ -7,9 +7,11 @@ require_relative '_constants'
 require_relative 'mp4'
 require_relative 'mp3'
 
+
+filepaths = JSON.parse(ARGV[0])
 data = []
 
-for filepath in ARGV
+for filepath in filepaths
 	extension = filepath.split('.')[-1]
 	mod = FILE_EXTENSION_MODULE_MAP[extension.intern]
 	tag_data = mod.read_tags(filepath)

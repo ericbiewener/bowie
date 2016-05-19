@@ -20,7 +20,7 @@ let errorAlert = 'Whoa, something went wrong when trying to install the required
     rvmInstalled,
     taglibRubyInstalled
 
-const bash = {
+const Bash = {
 	CHECK_HOMEBREW: path.join(BASH_PATH, 'check-homebrew.sh'),
 	CHECK_TAGLIB: path.join(BASH_PATH, 'check-taglib.sh'),
 	CHECK_GPG: path.join(BASH_PATH, 'check-gpg.sh'),
@@ -40,11 +40,11 @@ export default function checkDependencies(callback) {
 	let finalResult = {}
 
 	Promise.all([
-		execFilePromise(bash.CHECK_HOMEBREW).reflect(),
-		execFilePromise(bash.CHECK_TAGLIB).reflect(),
-		execFilePromise(bash.CHECK_GPG).reflect(),
-		execFilePromise(bash.CHECK_RVM).reflect(),
-		execFilePromise(bash.CHECK_TAGLIB_RUBY).reflect(),
+		execFilePromise(Bash.CHECK_HOMEBREW).reflect(),
+		execFilePromise(Bash.CHECK_TAGLIB).reflect(),
+		execFilePromise(Bash.CHECK_GPG).reflect(),
+		execFilePromise(Bash.CHECK_RVM).reflect(),
+		execFilePromise(Bash.CHECK_TAGLIB_RUBY).reflect(),
 	])
 	.then(results => {
 		homebrewInstalled = checkHomebrew(results[0])
@@ -61,25 +61,28 @@ export default function checkDependencies(callback) {
 
 		// Taglib & taglib-ruby are the only true dependences, so only kick off the
 		// full depdency installation chain if these are missing
-		if (!taglibInstalled || !taglibRubyInstalled || true) {
-			return execFilePromise(bash.PING)
-		} else {
-			return true
+		if (!taglibInstalled || !taglibRubyInstalled) {
+			console.log('RUNNING')
+			let p = execFilePromise(Bash.PING)
+			.then(installHomebrew)
+			.catch(error => {
+				console.log(error)
+
+				if (error.message.indexOf('ping.sh') > -1) {
+					updateDependencyStatus(INTERNET_IS_DISCONNECTED)
+				} else {
+					alert(errorAlert)
+				}
+			})
+
+			return p
 		}
-	})
-	.then(() => {
-		updateDependencyStatus(INSTALL_DEPENDENCIES)
-		installHomebrew()
-		return null
+
+		updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES)
 	})
 	.catch(error => {
 		console.log(error)
-		
-		if (error.message.indexOf('ping.sh') > -1) {
-			updateDependencyStatus(INTERNET_IS_DISCONNECTED)
-		} else {
-			alert('Whoaaa, something went wrong when checking for required dependencies. Please open an issue on this app\'s Github page:\n\nhttps://github.com/ericbiewener/bowie/issues')
-		}
+		alert(errorAlert)
 	})
 }
 
@@ -136,22 +139,23 @@ function checkIfInstalled(scriptResult, stringToCheck) {
  */
 
 function installHomebrew() {
+	updateDependencyStatus(INSTALL_DEPENDENCIES)
 	installTaglib()
-	// installScript(homebrewInstalled, bash.installHomebrew, 'Installing Homebrew', installTaglib)
+	// installScript(homebrewInstalled, Bash.installHomebrew, 'Installing Homebrew', installTaglib)
 }
 
 function installTaglib() {
-	installScript(taglibInstalled, bash.INSTALL_TAGLIB, 'Installing Taglib', installGpg)
+	installScript(taglibInstalled, Bash.INSTALL_TAGLIB, 'Installing Taglib', installGpg)
 }
 
 function installGpg() {
-	installScript(gpgInstalled, bash.INSTALL_GPG, 'Installing gpg', installRvmAndRuby)
+	installScript(gpgInstalled, Bash.INSTALL_GPG, 'Installing gpg', installRvmAndRuby)
 }
 
 function installRvmAndRuby() {
 	installScript(
 		rvmInstalled, 
-		bash.INSTALL_RVM_AND_RUBY, 
+		Bash.INSTALL_RVM_AND_RUBY, 
 		'Installing RVM & Ruby', 
 		installTaglibRuby,
 		handleRvmInstallError
@@ -161,7 +165,7 @@ function installRvmAndRuby() {
 function installTaglibRuby() {
 	installScript(
 		taglibRubyInstalled, 
-		bash.INSTALL_TAGLIB_RUBY, 
+		Bash.INSTALL_TAGLIB_RUBY, 
 		'Installing taglib-ruby', 
 		() => updateDependencyStatus(FINISHED_INSTALLING_DEPENDENCIES),
 		handleRvmInstallError
