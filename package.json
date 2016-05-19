@@ -34,7 +34,7 @@
     "browser-sync": "^2.12.3",
     "browserify": "^13.0.0",
     "cssnano": "^3.5.2",
-    "electron-prebuilt": "^0.37.8",
+    "electron-prebuilt": "^1.1.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-postcss": "^6.1.0",
