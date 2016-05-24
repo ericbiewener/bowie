@@ -10,9 +10,9 @@ const SimpleMenu = ({listItems, onClicks, className}) => (
 				tagName='li'
 				className='simple-menu-item'
 				isActive={item.isActive}
-				text={item.text}
-				onClick={onClicks[i]}
-			/>
+				onClick={onClicks[i]}>
+				{item.text}
+			</ActiveLink>
 		))}
 	</ul>
 )

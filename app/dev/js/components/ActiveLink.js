@@ -3,15 +3,15 @@ import React from 'react'
 import {slugify} from 'js/utils'
 
 
-const ActiveLink = ({isActive, onClick, text, tagName, className}) => {
+const ActiveLink = ({children, isActive, onClick, tagName, className}) => {
 	let TagName = tagName || 'a',
-	    textSlug = slugify(text),
+	    textSlug = slugify(children),
 	    active = isActive && 'active'
 
 	return	<TagName
 				className={`${active} ${className} ${className}-${textSlug}`}
 				onClick={!isActive && onClick}>
-				{text}
+				{children}
 			</TagName>
 }
 
