@@ -61,18 +61,20 @@ const PatternBuilder = React.createClass({
 	render: function() {
 		let options = this.props.options
 
-		return 	<FontResizer>
-					<div className='pattern-builder' ref={el => this.el = el}>
-						{this.props.patterns.map((pattern, i) => {
-							if (!pattern.selected) {
-								return <div key={i} className='unselected'>{pattern.text}</div>
-							}
+		return (
+			<FontResizer>
+				<div className='pattern-builder' ref={el => this.el = el}>
+					{this.props.patterns.map((pattern, i) => {
+						if (!pattern.selected) {
+							return <div key={i} className='unselected'>{pattern.text}</div>
+						}
 
-							let Component = pattern.mapping ? MappedPattern : UnmappedPattern
-							return <Component pattern={pattern} i={i} {...this.props} key={i} />
-						})}
-					</div>
-				</FontResizer>
+						let Component = pattern.mapping ? MappedPattern : UnmappedPattern
+						return <Component pattern={pattern} i={i} {...this.props} key={i} />
+					})}
+				</div>
+			</FontResizer>
+		)
 	}
 })
 
@@ -90,12 +92,14 @@ const UnmappedPattern = ({pattern, i, options, onSelectorItemClicked}) => {
 						No fields left!
 					</li>
 
-	return  <div className={createClassName(pattern)}>
-				{pattern.text}
-				<ul className='map-selector'>
-					{li}
-				</ul>
-			</div>
+	return (
+		<div className={createClassName(pattern)}>
+			{pattern.text}
+			<ul className='map-selector'>
+				{li}
+			</ul>
+		</div>
+	)
 }
 
 const MappedPattern = ({pattern, i, options, onMapLabelClicked}) => (

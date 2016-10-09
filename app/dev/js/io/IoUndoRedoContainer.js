@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-	undo: () => ActionCreators.undo(),
-	redo: () => ActionCreators.redo(),
+	undo: ActionCreators.undo,
+	redo: ActionCreators.redo,
 }
 
 export default connect(

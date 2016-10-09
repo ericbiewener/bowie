@@ -4,7 +4,13 @@ node_modules
 *.sublime-project
 *.sublime-workspace
 
+# Test data
 _song_examples
 _song_examples_BAK
 
+# Bundled app
 Bowie-darwin-x64
+
+# Compiled Files
+app/build/css/app.css
+app/build/js/app.js

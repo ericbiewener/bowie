@@ -53,5 +53,15 @@ main {
 }
 
 .logo {
-	background: url('../img/logo.svg');
+	background: url('../img/logo.svg') no-repeat;
+
+	&.main {
+		$height: 50px;
+		width: $height * $logoRatio;
+		height: $height;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		opacity: 0.5;
+	}
 }

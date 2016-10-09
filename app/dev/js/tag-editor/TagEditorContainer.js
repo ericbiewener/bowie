@@ -17,9 +17,9 @@ function mapStateToProps(state) {
 let {updateTag, viewEditedTags, inputBlurred} = TagEditorActionCreators
 
 const mapDispatchToProps = {
-	onInputChange: (songIndex, field, newVal, originalVal) => updateTag(songIndex, field, newVal, originalVal),
-	viewEditedTags: () => viewEditedTags(),
-	onBlur: e => inputBlurred(),
+	onInputChange: updateTag,
+	viewEditedTags: viewEditedTags,
+	onBlur: inputBlurred,
 }
 
 export default connect(

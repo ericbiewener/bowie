@@ -44,6 +44,7 @@ const Root = ({rootClass, openTutorial}) => (
 		</Dropzone>
 		<Tutorial />
 		<DependencyInfo />
+		<div className='logo main'></div>
 	</div>
 )
 
