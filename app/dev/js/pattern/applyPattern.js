@@ -30,7 +30,7 @@ function applyPattern(songsInput, patternsInput, parentDirectories) {
 	// longer pattern. This improves the accuracy of `discardUnmappedPattern()`
 	let consolidatedPatterns = [patterns[0]],
 	    prevPatternIsUnmapped = !patterns[0].mapping
-	
+
 	for (var i = 1; i < patterns.length; i++) {
 		let pattern = patterns[i],
 		    currentPatternIsUnmapped = !pattern.mapping
@@ -67,12 +67,11 @@ function applyPattern(songsInput, patternsInput, parentDirectories) {
 				let result = matchOnDelimiter(song, field, pattern, delimiter, delimiterOccurrences)
 				if (!result) matchOnTextLength(song, field, patternLength)
 			})
-		} 
+		}
 		else {
 			// Extreme edge case. The user selected the filepath all the way to the end.
 			// So they either selected the file extension, or the file has no extension.
 			consumeRemainingFilepath(songs, field)
-			
 		}
 	}
 
@@ -107,7 +106,8 @@ function matchOnTextLength(song, field, patternLength) {
 }
 
 function setValueAndTrimRemainingPath(song, field, validatedTagValue, patternLength) {
-	if (validatedTagValue !== false) song[field] = validatedTagValue
+	if (validatedTagValue !== false) song[field] = validatedTagValue.replace(/_/g, ' ')
+	console.log(song[field])
 	song.remainingPath = song.remainingPath.slice(patternLength)
 }
 

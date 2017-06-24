@@ -1,3 +1,4 @@
+import _ from 'js/lodash-modules'
 import applyPattern from 'js/pattern/applyPattern'
 
 
@@ -27,7 +28,7 @@ export function hasMappedPatterns(patterns) {
 
 const booleanStateForRootClass = [
 	'appIsLaunching', 'canUndo', 'canRedo', 'hasManualEdits', 'hasMappedPatterns',
-	'isViewingOriginalTags', 'isViewingPatternTags', 'isViewingEditedTags', 'isRunningTutorial', 
+	'isViewingOriginalTags', 'isViewingPatternTags', 'isViewingEditedTags', 'isRunningTutorial',
 	'isShowingTutorialText',
 ]
 

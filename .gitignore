@@ -9,8 +9,8 @@ _song_examples
 _song_examples_BAK
 
 # Bundled app
-Bowie-darwin-x64
+build
 
 # Compiled Files
-app/build/css/app.css
-app/build/js/app.js
+app/compiled/css/app.css
+app/compiled/js/app.js

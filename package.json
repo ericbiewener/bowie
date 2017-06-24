@@ -7,11 +7,13 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "package": "asar pack ./Bowie-darwin-x64/Bowie.app/Contents/Resources/app ./Bowie-darwin-x64/Bowie.app/Contents/Resources/app.asar",
-    "build": "electron-packager . Bowie --platform=darwin --arch=x64 --ignore=node_modules/electron-*"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -m",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "bluebird": "^3.3.5",
+    "electron-builder": "^19.8.0",
     "lodash": "^4.11.1",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
@@ -49,5 +51,11 @@
     "presets": [
       "es2015"
     ]
+  },
+  "build": {
+    "productName": "Bowie",
+    "mac": {
+      "icon": "./icon.icns"
+    }
   }
 }

@@ -22,7 +22,7 @@ const EditableDataTable = (props) => {
 							<Cell
 								key={n}
 								field={field}
-								value={datum[field]}
+								value={datum[field].replace(/_/g, ' ')}
 								originalValue={originalData[i][field]}
 								onChange={onInputChange.bind(null, i)}
 								onFocus={viewEditedTags}
@@ -50,7 +50,7 @@ const Cell = function({field, value, originalValue, onChange, onBlur, onFocus, i
 						onFocus={onFocus}
 						onBlur={onBlur} />
 					: <input
-						onChange={e => onChange(field, e.target.value, originalValue)} 
+						onChange={e => onChange(field, e.target.value, originalValue)}
 						value={inputValue}
 						className={className}
 						onFocus={onFocus}

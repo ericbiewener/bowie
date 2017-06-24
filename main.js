@@ -17,7 +17,7 @@ function createWindow () {
   mainWindow.maximize()
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/app/build/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/app/compiled/index.html');
 
   // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
